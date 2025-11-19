@@ -648,7 +648,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 /* ---------------------------------- */
-/* 頁面切換邏輯 (與上一個版本相同) */
+/* 頁面切換與時間控制邏輯 (NEW) */
 /* ---------------------------------- */
 const btnPre = document.getElementById("btn-pre");
 const btnPost = document.getElementById("btn-post");
@@ -661,6 +661,9 @@ const satisfactionCard = document.getElementById("satisfaction-card");
 const allCards = [preTestCard, postTestCard, satisfactionCard];
 const allBtns = [btnPre, btnPost, btnSat];
 
+// 設定開放時間：2025-11-23 11:30:00
+const UNLOCK_DATE = new Date("2025-11-23T11:30:00");
+
 function showCard(cardToShow, btnToActivate) {
   allCards.forEach(card => card.style.display = "none");
   allBtns.forEach(btn => btn.classList.remove("active"));
@@ -669,9 +672,27 @@ function showCard(cardToShow, btnToActivate) {
   btnToActivate.classList.add("active");
 }
 
+function checkTimeAndShow(card, btn) {
+  const now = new Date();
+  if (now < UNLOCK_DATE) {
+    // 時間未到，顯示提醒
+    showModal(
+      "尚未開放", 
+      "後測問卷與滿意度問卷將於 11/23(日) 11:30 開放填寫，敬請期待！"
+    );
+  } else {
+    // 時間已到，允許切換
+    showCard(card, btn);
+  }
+}
+
+// 前測不鎖時間
 btnPre.onclick = () => showCard(preTestCard, btnPre);
-btnPost.onclick = () => showCard(postTestCard, btnPost);
-btnSat.onclick = () => showCard(satisfactionCard, btnSat);
+
+// 後測與滿意度鎖時間
+btnPost.onclick = () => checkTimeAndShow(postTestCard, btnPost);
+btnSat.onclick = () => checkTimeAndShow(satisfactionCard, btnSat);
+
 
 /* ---------------------------------- */
 /* Google Sheet 提交 URL */
@@ -795,6 +816,9 @@ async function submitSurvey(type) {
     surveyName = "AI 工作坊 - 後測問卷";
     groups = POST_TEST_GROUPS;
     successMessage = "感謝您完成後測問卷！請繼續協助我們填寫「滿意度問卷」。";
+    // 這裡要注意：如果是自動跳轉，也要檢查時間嗎？
+    // 邏輯上如果後測填完了，滿意度通常也開放了，或者這裡可以不做限制直接跳轉
+    // 但如果要嚴謹，可以在 nextStep 裡再加判斷。目前維持直接跳轉。
     nextStep = () => showCard(satisfactionCard, btnSat);
     button = document.getElementById('submit-btn-post');
 
