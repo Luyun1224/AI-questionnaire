@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI 數位賦能工作坊｜全方位問卷</title>
+<style>
+:root { 
+    --bg1:#080b12; 
+    --bg2:#141a23; 
+    --primary:#38bdf8; 
+    --text:#f8fafc; 
+    --card-bg: rgba(56,189,248, .12);
+    --card-border: rgba(191,219,254, .3);
+    --input-border: #94a3b8;
+    --pill-active-bg: #e0f2fe;
+    --pill-active-border: var(--primary);
+    --pill-active-text: #0c4a6e;
+    --submit-bg: #38bdf8;
+    --submit-text: #030712;
+}
+body { 
+    margin:0; 
+    font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; 
+    color:var(--text); 
+    background:
+        radial-gradient(circle at top, rgba(56,189,248,.18), transparent 40%), 
+        linear-gradient(135deg, rgba(8,11,18,0.85), rgba(20,26,35,0.85)),
+        url('123.jpg') center/cover no-repeat fixed;
+    min-height:100vh; 
+    line-height: 1.6;
+}
+.container { max-width:980px; margin:0 auto; padding:24px; }
+.hero-grid { display:flex; flex-direction:column; gap:16px; margin-top:16px; }
+
+/* 海報圖片樣式 */
+.poster-container {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0 20px 60px rgba(13,30,79,.5);
+  border: 1px solid var(--card-border);
+  background: rgba(0,0,0,.3);
+  backdrop-filter: blur(10px);
+}
+.poster-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  object-position: center 10%;
+  display: block;
+  opacity: 1; /* 確保海報圖片完全清晰 */
+}
+
+.hero-card { border-radius:20px; overflow:hidden; box-shadow:0 20px 60px rgba(13,30,79,.15); position:relative; }
+
+.hero-card.hero-info { 
+    background:#030712; 
+    padding:28px; 
+    color:#f8fafc; 
+    overflow:hidden; 
+    border:1px solid rgba(148,163,184,.25);
+}
+.hero-card.hero-info::before { 
+    content:""; 
+    position:absolute; 
+    inset:-20%; 
+    background:radial-gradient(circle at 20% 20%, rgba(248,250,252,.28), transparent 55%), 
+               radial-gradient(circle at 80% 0%, rgba(56,189,248,.35), transparent 60%), 
+               radial-gradient(circle at 60% 80%, rgba(236,72,153,.35), transparent 60%); 
+    animation:pulseGlow 6s ease-in-out infinite; 
+    filter:blur(2px); 
+    z-index:0; 
+}
+.hero-card.hero-info > * { position:relative; z-index:2; }
+h1 { 
+    font-size:28px; 
+    margin:0 0 8px 0; 
+    letter-spacing:1px; 
+    background:linear-gradient(120deg, rgba(255,255,255,.98) 10%, #bae6fd 40%, #7dd3fc 55%, #f472b6 80%, rgba(255,255,255,.9) 100%); 
+    background-size:200% 100%; 
+    -webkit-background-clip:text; 
+    color:transparent; 
+    animation:heroGlow 3s ease-in-out infinite; 
+}
+.badge { 
+    display:inline-block; 
+    background:rgba(59,130,246,.2); 
+    color:#e0f2fe; 
+    padding:6px 12px; 
+    border-radius:999px; 
+    font-size:12px; 
+    letter-spacing:.5px; 
+    opacity:0; 
+    transform:translateY(-6px); 
+    animation:badgeFade 1.2s ease-out forwards; 
+    border:1px solid rgba(224,242,254,.5); 
+}
+.hero-subtitle { margin:0; font-size:16px; line-height:1.6; color:#e2e8f0; }
+.card { 
+    background: var(--card-bg);
+    border-radius:16px; 
+    padding:24px; 
+    margin:20px 0; 
+    box-shadow:0 10px 30px rgba(0,0,0,.35); 
+    border:1px solid var(--card-border); 
+    backdrop-filter:blur(10px); 
+    color:#f8fafc; 
+}
+.section-title { font-weight:700; font-size:18px; margin:0 0 12px 0; color:#e0f2fe; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;}
+.grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:12px 18px; }
+label { display:block; font-weight:600; margin-bottom:8px; }
+select, input[type="text"], textarea { 
+    width:100%; 
+    border:1px solid var(--input-border); 
+    border-radius:10px; 
+    padding:10px 12px; 
+    font-size:14px; 
+    outline:none; 
+    background: rgba(255,255,255, .05);
+    color: var(--text);
+    box-sizing: border-box;
+    backdrop-filter: blur(8px);
+}
+select option { background: #1e293b; color: var(--text); }
+textarea { font-family: inherit; line-height: 1.6; }
+.likert { display:flex; gap:10px; flex-wrap:wrap; }
+.pill { 
+    padding:8px 12px; 
+    border:1px solid var(--input-border); 
+    border-radius:999px; 
+    cursor:pointer; 
+    user-select:none; 
+    transition:all .15s;
+    font-size: 14px;
+    min-width: 20px;
+    text-align: center;
+}
+.pill input { display:none; }
+.pill.active, .pill:hover { 
+    background: var(--pill-active-bg); 
+    border-color: var(--pill-active-border); 
+    color: var(--pill-active-text);
+    font-weight: 700;
+}
+.submit { 
+    display:inline-block; 
+    background: var(--submit-bg); 
+    color: var(--submit-text); 
+    border:0; 
+    padding:12px 18px; 
+    border-radius:12px; 
+    font-weight:700; 
+    cursor:pointer; 
+    margin-top:8px; 
+    box-shadow:0 10px 20px rgba(56,189,248,.2); 
+    transition: all .2s;
+}
+.submit:hover { transform: translateY(-2px); box-shadow:0 12px 25px rgba(56,189,248,.3); }
+.submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.note { font-size:12px; color:#cbd5f5; }
+.toggle { display:flex; justify-content: center; gap: 8px; background:rgba(0,0,0,.2); padding:8px; border-radius:12px; border: 1px solid var(--card-border); max-width: 400px; margin: 0 auto; }
+.toggle button { 
+    flex: 1;
+    border:0; 
+    padding:8px 12px; 
+    border-radius:8px; 
+    background:transparent; 
+    font-weight:700; 
+    cursor:pointer; 
+    color:#cbd5f5; 
+    transition: all .2s;
+    white-space: nowrap;
+}
+.toggle button.active { 
+    background: var(--primary); 
+    color: var(--bg1); 
+    box-shadow:0 2px 10px rgba(56,189,248,.3); 
+}
+
+/* --- 新增的分組卡片樣式 --- */
+.sub-group-grid { 
+    display:grid; 
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 20px; 
+    margin-top: 16px;
+    margin-bottom: 24px; /* 與開放式問題分隔 */
+}
+.sub-group-card {
+    background: rgba(0,0,0, .3); /* Darker background inside the main card */
+    border-radius:12px; 
+    padding:20px; 
+    box-shadow:0 4px 15px rgba(0,0,0,.2); 
+    border:1px solid rgba(191,219,254, .15); /* Fainter border */
+    transition: all 0.2s;
+}
+.sub-group-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    color: var(--primary); /* Highlight title */
+    border-bottom: 1px dashed rgba(255,255,255,0.1);
+    padding-bottom: 8px;
+}
+.likert-item {
+    margin-bottom: 12px; /* Reduce spacing between questions within sub-card */
+}
+.likert-item label { 
+    font-weight: 500; /* Lighter font weight for question text */
+    margin-bottom: 6px; 
+    font-size: 14px;
+}
+/* --- 結束新增 --- */
+
+footer { text-align:center; padding:24px 0 8px; font-size:12px; color:#64748b; }
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .3s;
+  z-index: 100;
+}
+.modal-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.modal-content {
+  background: var(--bg2);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 24px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  transform: scale(0.9);
+  transition: all .3s;
+}
+.modal-overlay.visible .modal-content {
+  transform: scale(1);
+}
+.modal-content h2 {
+  margin: 0 0 12px 0;
+  color: var(--primary);
+}
+.modal-content p {
+  margin: 0 0 20px 0;
+  color: var(--text);
+}
+.modal-content button {
+  display: block;
+  margin-left: auto;
+  background: var(--primary);
+  color: var(--bg1);
+  border: 0;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
+@keyframes badgeFade {
+  0% { opacity:0; transform:translateY(-10px); }
+  50% { opacity:.6; }
+  100% { opacity:1; transform:translateY(0); }
+}
+
+@keyframes heroGlow {
+  0% { background-position:0% 50%; text-shadow:0 0 12px rgba(59,130,246,.8), 0 0 20px rgba(236,72,153,.4); filter:drop-shadow(0 0 4px rgba(248,250,252,.6)); }
+  50% { background-position:100% 50%; text-shadow:0 0 22px rgba(125,211,252,.95), 0 0 35px rgba(244,114,182,.7); filter:drop-shadow(0 0 12px rgba(250,250,250,.8)); }
+  100% { background-position:0% 50%; text-shadow:0 0 12px rgba(59,130,246,.8), 0 0 20px rgba(236,72,153,.4); filter:drop-shadow(0 0 4px rgba(248,250,252,.6)); }
+}
+
+@keyframes pulseGlow {
+  0% { transform:scale(1) rotate(0deg); opacity:.8; }
+  50% { transform:scale(1.2) rotate(8deg); opacity:1; }
+  100% { transform:scale(1) rotate(0deg); opacity:.8; }
+}
+
+/* RWD */
+@media (max-width:600px) {
+  .container { padding:16px; }
+  .hero-card.hero-info { padding:22px; }
+  .hero-card.hero-info .badge { font-size:11px; padding:4px 10px; }
+  h1 { font-size:22px; line-height:1.35; }
+  .hero-subtitle { font-size:14px; }
+  .card { padding: 20px; }
+  .toggle button { font-size: 13px; padding: 8px 4px; }
+  .sub-group-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Modal HTML -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-content">
+    <h2 id="modal-title">提示</h2>
+    <p id="modal-message">訊息內容</p>
+    <button id="modal-close">關閉</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="hero-grid">
+    <!-- 海報圖片 -->
+    <div class="poster-container">
+      <img src="poster.jpg" alt="AI 數位賦能工作坊海報" class="poster-image">
+    </div>
+    
+    <div class="hero-card hero-info">
+      <div class="badge">Workshop Survey</div>
+      <h1>AI 數位賦能工作坊</h1>
+      <p class="hero-subtitle">歡迎來到 AI 賦能工作坊！請依據課程進度，選擇下方的頁籤進行「前測」、「後測」或「滿意度」填寫。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">0. 前言與同意 (共用)</div>
+    <p class="note">此問卷匿名蒐集，僅用於品質改善與教育研究之統計分析。</p>
+    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+      <input type="checkbox" id="consent" style="width: auto;">
+      我已閱讀並同意參與匿名調查。
+    </label>
+  </div>
+
+  <div class="card">
+    <div class="section-title">1. 基本資料 (共用)</div>
+    <div class="grid">
+      <div>
+        <label for="role">您的角色別</label>
+        <select id="role">
+          <option value="">-- 請選擇 --</option>
+          <option value="醫療人員">醫療人員</option>
+          <option value="醫療行政">醫療行政</option>
+          <option value="其他">其他</option>
+        </select>
+      </div>
+      <div>
+        <label for="role_other">若選其他，請說明：</label>
+        <input type="text" id="role_other" placeholder="例如：醫學生、資訊人員">
+      </div>
+    </div>
+  </div>
+
+  <!-- Survey Toggle -->
+  <div style="text-align: center; margin: 24px 0;">
+    <div class="toggle">
+      <button id="btn-pre" class="active">前測問卷</button>
+      <button id="btn-post">後測問卷</button>
+      <button id="btn-sat">滿意度</button>
+    </div>
+  </div>
+
+  <!-- Pre-Test Card -->
+  <div class="card" id="pre-test-card">
+    <div class="section-title">A. 前測問卷 (1-5分)</div>
+    <p class="note" style="margin-bottom: 16px;">(1=非常不同意, 5=非常同意)</p>
+    <div id="pre-likert-container">
+        <!-- 內容將由 JavaScript 渲染為分組卡片 -->
+    </div>
+    
+    <label style="margin-top:20px; font-weight: 700;">【開放式問題】</label>
+    <label for="pre-open">您希望本次課程能解決的最重要困難是什麼？</label>
+    <textarea id="pre-open" rows="3"></textarea>
+    
+    <div style="margin-top:12px;">
+      <button class="submit" id="submit-btn-pre" onclick="submitSurvey('pre')">提交前測問卷</button>
+    </div>
+  </div>
+
+  <!-- Post-Test Card -->
+  <div class="card" id="post-test-card" style="display:none;">
+    <div class="section-title">B. 後測問卷 (1-5分)</div>
+    <p class="note" style="margin-bottom: 16px;">(1=非常不同意, 5=非常同意)</p>
+    <div id="post-likert-container">
+        <!-- 內容將由 JavaScript 渲染為分組卡片 -->
+    </div>
+    
+    <label style="margin-top:20px; font-weight: 700;">【開放式問題】</label>
+    <label for="post-open">請描述您在經過這次的工作坊後，最具體的行為改變或未來計畫。</label>
+    <textarea id="post-open" rows="3"></textarea>
+    
+    <div style="margin-top:12px;">
+      <button class="submit" id="submit-btn-post" onclick="submitSurvey('post')">提交後測問卷</button>
+    </div>
+  </div>
+
+  <!-- Satisfaction Card -->
+  <div class="card" id="satisfaction-card" style="display:none;">
+    <div class="section-title">C. 滿意度問卷 (1-5分)</div>
+    <p class="note" style="margin-bottom: 16px;">(1=非常不滿意, 5=非常滿意)</p>
+    <div id="sat-likert-container">
+        <!-- 內容將由 JavaScript 渲染為分組卡片 -->
+    </div>
+    
+    <label style="margin-top:20px; font-weight: 700;">【開放式問題】</label>
+    <label for="sat-open-1">本課程最值得保留的部分是？</label>
+    <textarea id="sat-open-1" rows="3"></textarea>
+    
+    <label style="margin-top:10px;" for="sat-open-2">本課程最需要改善的地方是？</label>
+    <textarea id="sat-open-2" rows="3"></textarea>
+    
+    <!-- 新增的網頁連結欄位 -->
+    <label style="margin-top:10px;" for="sat-open-3">請跟我們分享你完成的網頁連結：</label>
+    <textarea id="sat-open-3" rows="2"></textarea>
+    
+    <div style="margin-top:12px;">
+      <button class="submit" id="submit-btn-sat" onclick="submitSurvey('sat')">提交滿意度問卷</button>
+    </div>
+  </div>
+
+  <footer>© 2025 AI數位賦能工作坊 · 一頁式問卷</footer>
+</div>
+
+<script>
+/* ---------------------------------- */
+/* Modal 相關函式 */
+/* ---------------------------------- */
+const modalOverlay = document.getElementById('modal-overlay');
+const modalTitle = document.getElementById('modal-title');
+const modalMessage = document.getElementById('modal-message');
+const modalClose = document.getElementById('modal-close');
+
+function showModal(title, message) {
+  modalTitle.textContent = title;
+  modalMessage.textContent = message;
+  modalOverlay.classList.add('visible');
+}
+
+function hideModal() {
+  modalOverlay.classList.remove('visible');
+}
+
+modalClose.onclick = hideModal;
+modalOverlay.onclick = (e) => {
+  if (e.target === modalOverlay) {
+    hideModal();
+  }
+};
+
+
+/* ---------------------------------- */
+/* 問卷題目定義 (分組化) */
+/* ---------------------------------- */
+const PRE_TEST_GROUPS = [
+  {
+    title: "事前認知",
+    items: [
+      "我能明確區分 AI 工具在臨床、教學、或我工作領域的適用與不適用範圍。",
+      "我了解 AI 在醫學教育中常見的應用方式（如教材生成、案例模擬、評量）。"
+    ]
+  },
+  {
+    title: "學習動機",
+    items: [
+      "本工作坊能回應我目前在工作中的實際需求。",
+      "我有動機主動探索 AI 在教學/臨床/工作的整合方式。"
+    ]
+  },
+  {
+    title: "自我效能",
+    items: [
+      "我具備獨立操作至少一種 AI 工具的能力。",
+      "遇到 AI 工具使用問題時，我有能力自行解決大部分情況。"
+    ]
+  },
+  {
+    title: "轉化學習",
+    items: [
+      "我願意檢視並挑戰自己既有的工作方式。",
+      "我願意以新的觀點理解 AI 於醫學教育、臨床醫學中的角色。"
+    ]
+  }
+];
+
+const POST_TEST_GROUPS = [
+  {
+    title: "學習成效",
+    items: [
+      "我能具體說明 AI 工具如何應用於臨床與教學評量。",
+      "我能辨識常見 AI 工具背後的原理與限制。",
+      "我能理解 AI 在學習評量（assessment）中的風險與優勢。"
+    ]
+  },
+  {
+    title: "自我效能",
+    items: [
+      "我更有信心將 AI 直接用於課程準備、臨床教學、或是目前工作內容。",
+      "經由這次工作坊後，面對新的 AI 工具，我能快速理解並嘗試操作。"
+    ]
+  },
+  {
+    title: "轉化學習",
+    items: [
+      "經由這次工作坊後，我重新思考以往的教學或工作方式是否需要更新或調整。",
+      "本課程促使我願意採用新的教學策略或臨床工作模式。"
+    ]
+  },
+  {
+    title: "行為意圖",
+    items: [
+      "我預期會在未來兩週內把至少一項 AI 工具整合進我的工作流程。",
+      "我會主動尋找 AI 工具協助改善特定教學或臨床流程。"
+    ]
+  }
+];
+
+const SATISFACTION_GROUPS = [
+  {
+    title: "整體評價",
+    items: [
+      "課程目標與內容結構清晰。",
+      "課程難度與深度適中。",
+      "授課方式有助於理解 AI 的核心觀念。"
+    ]
+  },
+  {
+    title: "學習設計",
+    items: [
+      "課程內容具備立即可應用於臨床/教學的實用性。",
+      "活動安排符合成人學習者的需求（自主性、經驗連結、問題導向）。"
+    ]
+  },
+  {
+    title: "教學品質與支持",
+    items: [
+      "場地設備與課程資訊提供充足。",
+      "課程時間規劃恰當且流暢。",
+      "我願意推薦同事參加未來的 AI 賦能課程。"
+    ]
+  }
+];
+
+/* ---------------------------------- */
+/* 渲染 Likert 量表 (支援分組與題號) */
+/* ---------------------------------- */
+function renderGroupedLikert(containerId, groups, prefix) {
+  const container = document.getElementById(containerId);
+  if (!container) {
+    console.error("Container not found: ", containerId);
+    return;
+  }
+  container.innerHTML = "";
+  
+  const groupGrid = document.createElement('div');
+  groupGrid.className = "sub-group-grid";
+  container.appendChild(groupGrid);
+
+  let itemIndex = 1; // 從 1 開始計數，用於顯示題號
+  
+  groups.forEach(group => {
+    const groupCard = document.createElement('div');
+    groupCard.className = "sub-group-card";
+    
+    const title = document.createElement('h3');
+    title.textContent = group.title;
+    groupCard.appendChild(title);
+
+    group.items.forEach(text => {
+      const row = document.createElement('div');
+      row.className = "likert-item";
+      
+      const label = document.createElement('label');
+      // 將題號加入到問題文字前
+      label.textContent = `${itemIndex}. ${text}`; 
+      row.appendChild(label);
+
+      const likertScale = document.createElement('div');
+      likertScale.className = "likert";
+      // Radio button name 仍然使用 0-based index 來對應資料儲存 (pre_0, pre_1, ...)
+      const radioName = prefix + "_" + (itemIndex - 1); 
+      
+      ["1","2","3","4","5"].forEach(value => {
+        const pill = document.createElement('label');
+        pill.className = "pill";
+
+        const input = document.createElement('input');
+        input.type = "radio";
+        input.name = radioName;
+        input.value = value;
+
+        pill.appendChild(input);
+        pill.appendChild(document.createTextNode(value));
+
+        // click 事件來處理 active 狀態
+        pill.addEventListener("click", () => {
+          // 移除同組中所有 pill 的 active class
+          [...document.getElementsByName(radioName)].forEach(radio => {
+            if (radio.parentElement) {
+              radio.parentElement.classList.remove("active");
+            }
+          });
+          // 為被點擊的 pill 加上 active class
+          if (input.parentElement) {
+            input.parentElement.classList.add("active");
+          }
+        });
+
+        likertScale.appendChild(pill);
+      });
+
+      row.appendChild(likertScale);
+      groupCard.appendChild(row);
+      itemIndex++; // 題號遞增
+    });
+    
+    groupGrid.appendChild(groupCard);
+  });
+}
+
+// 頁面載入時渲染所有量表
+document.addEventListener('DOMContentLoaded', () => {
+    renderGroupedLikert("pre-likert-container", PRE_TEST_GROUPS, "pre");
+    renderGroupedLikert("post-likert-container", POST_TEST_GROUPS, "post");
+    renderGroupedLikert("sat-likert-container", SATISFACTION_GROUPS, "sat");
+});
+
+
+/* ---------------------------------- */
+/* 頁面切換邏輯 (與上一個版本相同) */
+/* ---------------------------------- */
+const btnPre = document.getElementById("btn-pre");
+const btnPost = document.getElementById("btn-post");
+const btnSat = document.getElementById("btn-sat");
+
+const preTestCard = document.getElementById("pre-test-card");
+const postTestCard = document.getElementById("post-test-card");
+const satisfactionCard = document.getElementById("satisfaction-card");
+
+const allCards = [preTestCard, postTestCard, satisfactionCard];
+const allBtns = [btnPre, btnPost, btnSat];
+
+function showCard(cardToShow, btnToActivate) {
+  allCards.forEach(card => card.style.display = "none");
+  allBtns.forEach(btn => btn.classList.remove("active"));
+  
+  cardToShow.style.display = "block";
+  btnToActivate.classList.add("active");
+}
+
+btnPre.onclick = () => showCard(preTestCard, btnPre);
+btnPost.onclick = () => showCard(postTestCard, btnPost);
+btnSat.onclick = () => showCard(satisfactionCard, btnSat);
+
+/* ---------------------------------- */
+/* Google Sheet 提交 URL */
+/* ---------------------------------- */
+// 請注意：這個 URL 必須與您部署的 Apps Script 網頁應用程式 URL 完全一致。
+const DEPLOYED_URL = "https://script.google.com/macros/s/AKfycbxopRT91OyChEF1LMd9QSdAyPhIk_3NVHEofMS4PNz6wYbNUGhSCNBwtviO7WRpOxCa/exec";
+
+/**
+ * 異步提交資料到 Google Sheet
+ * @param {object} dataObject - 要提交的資料物件
+ * @param {HTMLButtonElement} button - 被點擊的按鈕
+ * @returns {Promise<boolean>} - 回傳是否提交成功
+ */
+async function sendToGoogleSheet(dataObject, button) {
+  let originalButtonText = "";
+  if (button) {
+    originalButtonText = button.textContent;
+    button.disabled = true;
+    button.textContent = "提交中...";
+  }
+
+  try {
+    // 使用 fetch 進行 POST 請求
+    await fetch(DEPLOYED_URL, {
+      method: "POST",
+      // Apps Script 部署為網頁應用程式時，通常需要 'no-cors' 模式
+      mode: "no-cors", 
+      body: JSON.stringify(dataObject),
+      headers: {
+        // Content-Type 必須是 application/json，Apps Script 才能正確解析
+        "Content-Type": "application/json",
+      },
+    });
+
+    // 在 'no-cors' 模式下，我們無法讀取回應內容，只能假設網路請求成功即提交成功。
+    console.log("資料已送出 (no-cors 模式)");
+    return true; 
+    
+  } catch (error) {
+    // 捕捉網路連線失敗或瀏覽器層級的錯誤
+    console.error("Fetch 錯誤:", error);
+    showModal("提交失敗", "無法連線至資料庫，請檢查您的網路連線或 Apps Script 部署狀態。 " + error);
+    if (button) { 
+      button.disabled = false;
+      button.textContent = originalButtonText;
+    }
+    return false; 
+  }
+}
+
+
+/* ---------------------------------- */
+/* 資料蒐集與提交 (更新以支援分組結構) */
+/* ---------------------------------- */
+
+function getLikertValue(group) {
+  const radios = document.getElementsByName(group);
+  for (const r of radios) {
+    if (r.checked) return r.value;
+  }
+  return ""; 
+}
+
+function getTotalItemCount(groups) {
+    return groups.reduce((total, group) => total + group.items.length, 0);
+}
+
+function validateLikert(prefix, groups) { 
+  const itemCount = getTotalItemCount(groups);
+  const missingItems = [];
+  for (let i = 0; i < itemCount; i++) {
+    // 檢查 radio button name: prefix_i (e.g., pre_0, pre_1)
+    const value = getLikertValue(`${prefix}_${i}`);
+    if (!value) {
+      missingItems.push(i + 1); // 記錄題號 (從 1 開始)
+    }
+  }
+  return missingItems;
+}
+
+function getBaseData() {
+  const role = document.getElementById("role").value;
+  const roleOther = document.getElementById("role_other").value;
+  return {
+    timestamp: new Date().toISOString(),
+    // 欄位名稱應與 Apps Script 預期的標頭一致
+    角色: role,
+    角色_其他: role === '其他' ? roleOther : "",
+  };
+}
+
+async function submitSurvey(type) {
+  // 1. 檢查同意書
+  if (!document.getElementById("consent").checked) {
+    showModal("提醒", "請先勾選「我已閱讀並同意參與匿名調查」。");
+    return;
+  }
+  
+  // 2. 檢查基本資料
+  const role = document.getElementById("role").value;
+  if (!role) {
+    showModal("提醒", "請先選擇您的「角色別」。");
+    return;
+  }
+
+  let surveyData = {};
+  let surveyName = "";
+  let button; 
+  let missingItems = []; 
+  let groups = [];
+  let successMessage = "";
+  let nextStep = null;
+
+  if (type === 'pre') {
+    surveyName = "AI 工作坊 - 前測問卷";
+    groups = PRE_TEST_GROUPS;
+    successMessage = "感謝您完成前測問卷！祝您課程收穫滿滿。";
+    button = document.getElementById('submit-btn-pre');
+    
+  } else if (type === 'post') {
+    surveyName = "AI 工作坊 - 後測問卷";
+    groups = POST_TEST_GROUPS;
+    successMessage = "感謝您完成後測問卷！請繼續協助我們填寫「滿意度問卷」。";
+    nextStep = () => showCard(satisfactionCard, btnSat);
+    button = document.getElementById('submit-btn-post');
+
+  } else if (type === 'sat') {
+    surveyName = "AI 工作坊 - 滿意度問卷";
+    groups = SATISFACTION_GROUPS;
+    successMessage = "感謝您的填寫！您的回饋是我們進步的動力。";
+    button = document.getElementById('submit-btn-sat');
+  }
+
+  // 3. 檢查必填項目 (Likert Scale)
+  missingItems = validateLikert(type, groups);
+  if (missingItems.length > 0) {
+    showModal("提醒", `請完成必填題目！未填 Likert 題目編號：${missingItems.join(', ')}`);
+    return;
+  }
+  
+  // 4. 建立問卷資料物件
+  if (type === 'pre') {
+    surveyData = buildPreTestResponse();
+  } else if (type === 'post') {
+    surveyData = buildPostTestResponse();
+  } else if (type === 'sat') {
+    surveyData = buildSatisfactionResponse();
+  }
+
+
+  // 整合所有資料，確保 surveyName 傳入 Apps Script
+  const finalResponse = {
+    surveyName: surveyName, // Apps Script 依賴此欄位進行分頁
+    ...getBaseData(),
+    ...surveyData
+  };
+
+  console.log("問卷提交中 (Apps Script):", finalResponse);
+  
+  // 5. 呼叫 Apps Script
+  const success = await sendToGoogleSheet(finalResponse, button);
+
+  if (!success) return;
+
+  // 6. 成功後的 UI 處理
+  showModal("提交成功", successMessage);
+  
+  if (button) {
+    button.disabled = true;
+    button.textContent = "已提交";
+  }
+
+  if (nextStep) {
+    // 延遲一點點再切換，讓使用者先看到成功訊息
+    setTimeout(nextStep, 1500);
+  }
+}
+
+// 建立前測回應物件
+function buildPreTestResponse() {
+  let data = {};
+  const itemCount = getTotalItemCount(PRE_TEST_GROUPS);
+  for (let idx = 0; idx < itemCount; idx++) {
+      // 確保 Likert 題目的 key 為 pre_0, pre_1, ...
+      data[`pre_${idx}`] = getLikertValue(`pre_${idx}`);
+  }
+  // 確保開放式問題的 key 與 Apps Script 標頭一致
+  data.open_pre = document.getElementById("pre-open").value.replace(/\n/g, " ");
+  return data;
+}
+
+// 建立後測回應物件
+function buildPostTestResponse() {
+  let data = {};
+  const itemCount = getTotalItemCount(POST_TEST_GROUPS);
+  for (let idx = 0; idx < itemCount; idx++) {
+      // 確保 Likert 題目的 key 為 post_0, post_1, ...
+      data[`post_${idx}`] = getLikertValue(`post_${idx}`);
+  }
+  // 確保開放式問題的 key 與 Apps Script 標頭一致
+  data.open_post = document.getElementById("post-open").value.replace(/\n/g, " ");
+  return data;
+}
+
+// 建立滿意度回應物件
+function buildSatisfactionResponse() {
+  let data = {};
+  const itemCount = getTotalItemCount(SATISFACTION_GROUPS);
+  for (let idx = 0; idx < itemCount; idx++) {
+      // 確保 Likert 題目的 key 為 sat_0, sat_1, ...
+      data[`sat_${idx}`] = getLikertValue(`sat_${idx}`);
+  }
+  // 確保開放式問題的 key 與 Apps Script 標頭一致
+  data.open_sat_1_good = document.getElementById("sat-open-1").value.replace(/\n/g, " ");
+  data.open_sat_2_improve = document.getElementById("sat-open-2").value.replace(/\n/g, " ");
+  // 新增的網頁連結欄位
+  data.open_sat_3_link = document.getElementById("sat-open-3").value.replace(/\n/g, " ");
+  return data;
+}
+
+</script>
+</body>
+</html>
