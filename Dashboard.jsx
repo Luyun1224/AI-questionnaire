@@ -82,29 +82,29 @@ const StatCard = ({ title, value, icon: Icon, trend, trendUp, sub, colorClass, f
     {/* 裝飾層：獨立裁切，不影響內容 */}
     <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
         <div className={`absolute -top-2 -right-2 opacity-[0.08] group-hover:opacity-[0.15] transition-opacity transform group-hover:scale-110 duration-500 ${colorClass.replace('bg-', 'text-')}`}>
-        <Icon size={100} />
+        <Icon size={120} />
         </div>
     </div>
 
     {/* 內容層：z-10 確保在裝飾之上 */}
     <div className="flex justify-between items-start relative z-10">
       <div>
-        <div className="flex items-center gap-1.5 mb-1">
-          <h3 className="text-slate-400 text-sm font-bold uppercase tracking-wider">{title}</h3>
+        <div className="flex items-center gap-2 mb-2">
+          <h3 className="text-slate-300 text-base font-bold uppercase tracking-wider">{title}</h3>
           {tooltip && <InfoTooltip text={tooltip} />}
         </div>
-        <div className="text-4xl font-extrabold text-white tracking-tight mt-2 drop-shadow-sm">{value}</div>
+        <div className="text-5xl font-extrabold text-white tracking-tight mt-2 drop-shadow-sm">{value}</div>
       </div>
-      <div className={`p-3 rounded-xl shadow-inner ${colorClass} bg-opacity-20 border border-white/10`}>
-        <Icon size={24} className="text-white" />
+      <div className={`p-4 rounded-xl shadow-inner ${colorClass} bg-opacity-20 border border-white/10`}>
+        <Icon size={28} className="text-white" />
       </div>
     </div>
-    <div className="mt-4 pt-3 border-t border-slate-700/50 flex justify-between items-center relative z-10">
-      <span className="text-xs text-slate-500 font-medium">{footerLabel || "即時數據"}</span>
-      <div className={`flex items-center gap-1 font-bold text-sm ${trendUp ? 'text-emerald-400' : 'text-rose-400'}`}>
-         {trend === 'Live' && <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-1"></div>}
+    <div className="mt-5 pt-4 border-t border-slate-700/50 flex justify-between items-center relative z-10">
+      <span className="text-sm text-slate-400 font-medium">{footerLabel || "即時數據"}</span>
+      <div className={`flex items-center gap-1 font-bold text-base ${trendUp ? 'text-emerald-400' : 'text-rose-400'}`}>
+         {trend === 'Live' && <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse mr-1"></div>}
          {trend}
-         <span className="text-[10px] text-slate-500 font-medium ml-1 normal-case opacity-80">({sub})</span>
+         <span className="text-xs text-slate-400 font-medium ml-1 normal-case opacity-80">({sub})</span>
       </div>
     </div>
   </Card>
@@ -140,10 +140,10 @@ const HeatmapCell = ({ value, isBold }) => {
   else if (num >= 3.5) colorClass = 'text-yellow-400';
   else if (num > 0) colorClass = 'text-rose-400';
   
-  const fontClass = isBold ? 'text-lg font-extrabold' : 'text-base font-bold';
+  const fontClass = isBold ? 'text-2xl font-extrabold' : 'text-lg font-bold';
 
   return (
-    <td className={`px-6 py-4 align-middle transition-colors hover:bg-white/5 ${isBold ? 'text-right' : 'text-center'}`}>
+    <td className={`px-6 py-5 align-middle transition-colors hover:bg-white/5 ${isBold ? 'text-right' : 'text-center'}`}>
       <span className={`${colorClass} ${fontClass}`}>{value === '-' ? '-' : num}</span>
     </td>
   );
@@ -166,8 +166,8 @@ const CustomRadarTick = ({ payload, x, y, textAnchor, stroke, radius }) => {
         x={x}
         y={y}
         textAnchor={textAnchor}
-        fill="#94a3b8"
-        fontSize={13}
+        fill="#e2e8f0"
+        fontSize={15}
         fontWeight={700}
         className={`transition-colors select-none ${visible ? 'fill-sky-400' : 'group-hover:fill-sky-400'}`}
       >
@@ -483,17 +483,17 @@ const Dashboard = () => {
                       </ResponsiveContainer>
                     </div>
                     <div className="md:w-40 md:border-l border-slate-700/50 md:pl-4 mt-6 md:mt-0 flex flex-col justify-center gap-4">
-                       <h4 className="text-xs font-extrabold text-slate-500 uppercase tracking-widest mb-2">維度快速解讀</h4>
+                       <h4 className="text-sm font-extrabold text-slate-400 uppercase tracking-widest mb-2">維度快速解讀</h4>
                        {radarData.map((item, idx) => {
                          const defKey = ['learning_effectiveness', 'self_efficacy', 'transformative_learning', 'behavioral_intention'][idx];
                          const color = ['text-sky-400', 'text-amber-400', 'text-emerald-400', 'text-purple-400'][idx];
                          return (
                            <div key={item.subject} className="group">
                               <div className="flex justify-between items-end mb-1">
-                                <span className={`font-bold text-xs ${color}`}>{item.subject}</span>
-                                <span className="text-white font-mono font-bold text-base">{item.A}</span>
+                                <span className={`font-bold text-sm ${color}`}>{item.subject}</span>
+                                <span className="text-white font-mono font-bold text-lg">{item.A}</span>
                               </div>
-                              <div className="h-1 w-full bg-slate-700/50 rounded-full overflow-hidden">
+                              <div className="h-1.5 w-full bg-slate-700/50 rounded-full overflow-hidden">
                                  <div className={`h-full rounded-full ${color.replace('text', 'bg')} opacity-80`} style={{ width: `${(item.A / 5) * 100}%` }}></div>
                               </div>
                            </div>
@@ -517,28 +517,28 @@ const Dashboard = () => {
                     <div className="flex flex-col md:flex-row gap-6 h-full">
                        <div className="flex-1 min-h-[250px]">
                          <ResponsiveContainer width="100%" height="100%">
-                            <BarChart layout="vertical" data={satisfactionDetailedData.chartData} margin={{ top: 0, right: 30, left: 20, bottom: 0 }} barCategoryGap={8}>
+                            <BarChart layout="vertical" data={satisfactionDetailedData.chartData} margin={{ top: 0, right: 40, left: 20, bottom: 0 }} barCategoryGap={12}>
                                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#334155" />
                                <XAxis type="number" domain={[0, 5]} hide />
-                               <YAxis dataKey="name" type="category" tick={{ fill: '#cbd5e1', fontWeight: 700, fontSize: 12 }} width={80} axisLine={false} tickLine={false} />
+                               <YAxis dataKey="name" type="category" tick={{ fill: '#f1f5f9', fontWeight: 700, fontSize: 15 }} width={90} axisLine={false} tickLine={false} />
                                <Tooltip cursor={{fill: 'rgba(255,255,255,0.05)'}} contentStyle={{ backgroundColor: '#1e293b', borderColor: '#818cf8', color: '#f8fafc', borderRadius: '8px' }} />
-                               <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={16} label={{ position: 'right', fill: '#fff', fontSize: 11, fontWeight: 'bold' }}>
+                               <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={24} label={{ position: 'right', fill: '#fff', fontSize: 14, fontWeight: '800' }}>
                                   {satisfactionDetailedData.chartData?.map((entry, index) => (<Cell key={`cell-${index}`} fill={entry.fill} />))}
                                </Bar>
                             </BarChart>
                          </ResponsiveContainer>
                        </div>
                        <div className="md:w-48 flex flex-col justify-center gap-4 pl-4 md:border-l border-slate-700/50">
-                          <h4 className="text-xs font-extrabold text-slate-500 uppercase tracking-widest">重點分析 Insights</h4>
-                          <div className="bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-lg">
-                             <div className="flex items-center gap-2 mb-1"><ThumbsUp size={14} className="text-emerald-400" /><span className="text-xs font-bold text-emerald-300 uppercase">表現最佳 Strengths</span></div>
-                             <div className="text-lg font-extrabold text-white">{satisfactionDetailedData.highest?.value}</div>
-                             <div className="text-xs text-slate-300 mt-0.5">{satisfactionDetailedData.highest?.name}</div>
+                          <h4 className="text-sm font-extrabold text-slate-400 uppercase tracking-widest">重點分析 Insights</h4>
+                          <div className="bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-lg">
+                             <div className="flex items-center gap-2 mb-1"><ThumbsUp size={16} className="text-emerald-400" /><span className="text-xs font-bold text-emerald-300 uppercase">表現最佳 Strengths</span></div>
+                             <div className="text-2xl font-extrabold text-white">{satisfactionDetailedData.highest?.value}</div>
+                             <div className="text-sm text-slate-300 mt-0.5">{satisfactionDetailedData.highest?.name}</div>
                           </div>
-                          <div className={`border p-3 rounded-lg ${satisfactionDetailedData.lowest?.value < 4.0 ? 'bg-amber-500/10 border-amber-500/20' : 'bg-slate-700/30 border-slate-600'}`}>
-                             <div className="flex items-center gap-2 mb-1"><AlertTriangle size={14} className={satisfactionDetailedData.lowest?.value < 4.0 ? "text-amber-400" : "text-slate-400"} /><span className={`text-xs font-bold uppercase ${satisfactionDetailedData.lowest?.value < 4.0 ? "text-amber-300" : "text-slate-400"}`}>需注意 Weaknesses</span></div>
-                             <div className="text-lg font-extrabold text-white">{satisfactionDetailedData.lowest?.value}</div>
-                             <div className="text-xs text-slate-300 mt-0.5">{satisfactionDetailedData.lowest?.name}</div>
+                          <div className={`border p-4 rounded-lg ${satisfactionDetailedData.lowest?.value < 4.0 ? 'bg-amber-500/10 border-amber-500/20' : 'bg-slate-700/30 border-slate-600'}`}>
+                             <div className="flex items-center gap-2 mb-1"><AlertTriangle size={16} className={satisfactionDetailedData.lowest?.value < 4.0 ? "text-amber-400" : "text-slate-400"} /><span className={`text-xs font-bold uppercase ${satisfactionDetailedData.lowest?.value < 4.0 ? "text-amber-300" : "text-slate-400"}`}>需注意 Weaknesses</span></div>
+                             <div className="text-2xl font-extrabold text-white">{satisfactionDetailedData.lowest?.value}</div>
+                             <div className="text-sm text-slate-300 mt-0.5">{satisfactionDetailedData.lowest?.name}</div>
                           </div>
                        </div>
                     </div>
@@ -560,9 +560,9 @@ const Dashboard = () => {
                       <div key={i} className="bg-slate-800 p-4 rounded-2xl rounded-tl-none relative border border-slate-700 shadow-sm">
                         <div className="absolute -left-2 top-0 w-4 h-4 bg-slate-800 transform skew-x-12 z-0"></div>
                         <div className="relative z-10">
-                          <p className="text-sm text-slate-200 leading-relaxed mb-2">{item.text}</p>
+                          <p className="text-base text-slate-200 leading-relaxed mb-2">{item.text}</p>
                           <div className="flex justify-end items-center gap-2">
-                            <span className="text-[10px] font-bold text-sky-400 bg-sky-900/30 px-1.5 py-0.5 rounded uppercase">{item.role}</span>
+                            <span className="text-xs font-bold text-sky-400 bg-sky-900/30 px-2 py-1 rounded uppercase">{item.role}</span>
                           </div>
                         </div>
                       </div>
@@ -583,9 +583,9 @@ const Dashboard = () => {
                       <div key={i} className="bg-slate-800 p-4 rounded-2xl rounded-tl-none relative border border-slate-700 shadow-sm">
                          <div className="absolute -left-2 top-0 w-4 h-4 bg-slate-800 transform skew-x-12 z-0"></div>
                          <div className="relative z-10">
-                          <p className="text-sm text-slate-200 leading-relaxed mb-2">{item.text}</p>
+                          <p className="text-base text-slate-200 leading-relaxed mb-2">{item.text}</p>
                           <div className="flex justify-end items-center gap-2">
-                            <span className="text-[10px] font-bold text-amber-400 bg-amber-900/30 px-1.5 py-0.5 rounded uppercase">{item.role}</span>
+                            <span className="text-xs font-bold text-amber-400 bg-amber-900/30 px-2 py-1 rounded uppercase">{item.role}</span>
                           </div>
                          </div>
                       </div>
@@ -606,9 +606,9 @@ const Dashboard = () => {
                       <div key={i} className="bg-slate-800 p-4 rounded-2xl rounded-tl-none relative border border-slate-700 shadow-sm">
                         <div className="absolute -left-2 top-0 w-4 h-4 bg-slate-800 transform skew-x-12 z-0"></div>
                         <div className="relative z-10">
-                          <p className="text-sm text-slate-200 leading-relaxed mb-2">{item.text}</p>
+                          <p className="text-base text-slate-200 leading-relaxed mb-2">{item.text}</p>
                           <div className="flex justify-end items-center gap-2">
-                            <span className="text-[10px] font-bold text-emerald-400 bg-emerald-900/30 px-1.5 py-0.5 rounded uppercase">{item.role}</span>
+                            <span className="text-xs font-bold text-emerald-400 bg-emerald-900/30 px-2 py-1 rounded uppercase">{item.role}</span>
                           </div>
                         </div>
                       </div>
@@ -667,7 +667,7 @@ const Dashboard = () => {
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left text-slate-300">
-                  <thead className="text-xs text-slate-400 uppercase bg-slate-900/50">
+                  <thead className="text-sm text-slate-400 uppercase bg-slate-900/50">
                     <tr>
                       <th className="px-6 py-4 font-extrabold tracking-wider">角色 Role</th>
                       <th className="px-6 py-4 font-extrabold text-center">學習成效</th>
@@ -683,8 +683,8 @@ const Dashboard = () => {
                       const getAvg = (key) => roleData.length ? (roleData.reduce((acc, cur) => acc + cur[key], 0) / roleData.length).toFixed(2) : '-';
                       return (
                         <tr key={role} className="hover:bg-white/5 transition-colors">
-                          <td className="px-6 py-4 font-bold text-white flex items-center gap-3">
-                            <div className="w-2.5 h-2.5 rounded-sm shadow-[0_0_8px_currentColor]" style={{backgroundColor: COLORS.roles[role], color: COLORS.roles[role]}}></div>
+                          <td className="px-6 py-4 font-bold text-white flex items-center gap-3 text-base">
+                            <div className="w-3 h-3 rounded-sm shadow-[0_0_8px_currentColor]" style={{backgroundColor: COLORS.roles[role], color: COLORS.roles[role]}}></div>
                             {role}
                           </td>
                           <HeatmapCell value={getAvg('learning_effectiveness')} />
