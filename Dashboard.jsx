@@ -9,6 +9,8 @@ import {
   Layers, HelpCircle, X, Info, Loader2, AlertCircle, TrendingUp, Quote,
   ThumbsUp, AlertTriangle, Lightbulb, Rocket, Sparkles, ExternalLink, Image as ImageIcon
 } from 'lucide-react';
+import logoImg from './assets/logo.png';
+import chimeiImg from './assets/Chimei.png';
 
 // ==========================================
 // 設定區域
@@ -403,7 +405,7 @@ const Dashboard = () => {
         <div className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col space-y-6">
           <div className="flex items-center space-x-4">
             <div className="p-2 bg-white rounded-xl shadow-lg shadow-blue-900/10 border border-slate-100">
-              <img src="logo.png" alt="Logo" className="w-12 h-12 object-contain" />
+              <img src={logoImg} alt="Logo" className="w-12 h-12 object-contain" />
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-extrabold text-[#144679] tracking-wide leading-tight">
@@ -433,15 +435,15 @@ const Dashboard = () => {
 
              {viewMode === 'overview' && (
                <div className="flex flex-col items-end ml-0 sm:ml-auto gap-2">
-                  <img src="Chimei.png" alt="Chimei" className="h-8 object-contain" />
-                  <div className="flex items-center space-x-3 bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm group hover:border-[#144679]/30 transition-colors">
-                    <span className="text-slate-400 text-xs uppercase font-extrabold tracking-wider">FILTER:</span>
-                    <div className="flex items-center relative">
-                      <Filter className="w-4 h-4 text-[#144679] mr-2" />
+                  <img src={chimeiImg} alt="Chimei" className="h-8 object-contain" />
+                  <div className="flex items-center space-x-3 bg-white px-6 py-2.5 rounded-full border border-slate-200 shadow-sm group hover:border-[#144679]/30 transition-colors min-w-[240px]">
+                    <span className="text-slate-400 text-xs uppercase font-extrabold tracking-wider whitespace-nowrap">FILTER:</span>
+                    <div className="flex items-center relative w-full">
+                      <Filter className="w-4 h-4 text-[#144679] mr-2 flex-shrink-0" />
                       <select 
                         value={selectedRole} 
                         onChange={(e) => setSelectedRole(e.target.value)}
-                        className="bg-white text-slate-700 border-none text-sm font-bold focus:ring-0 py-1 pr-8 cursor-pointer hover:text-[#144679] transition-colors outline-none appearance-none"
+                        className="bg-white text-slate-700 border-none text-sm font-bold focus:ring-0 py-1 pr-8 w-full cursor-pointer hover:text-[#144679] transition-colors outline-none appearance-none"
                         style={{ backgroundColor: '#ffffff', color: '#334155' }}
                       >
                         <option value="All" className="bg-white text-slate-700">全部角色 (All Roles)</option>
