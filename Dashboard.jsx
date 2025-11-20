@@ -128,10 +128,13 @@ const InfoTooltip = ({ text }) => {
       <Info size={14} className={`text-slate-400 hover:text-[#144679] transition-colors ${visible ? 'text-[#144679]' : ''}`} />
       
       {/* Tooltip Popup - 改為顯示在下方 (top-full) 並增加寬度 */}
-      <div className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-3 w-80 p-4 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-600 shadow-2xl transition-all duration-200 z-[100] leading-relaxed whitespace-pre-line ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
+      <div 
+        className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-3 w-80 p-4 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-600 shadow-2xl transition-all duration-200 z-[9999] leading-relaxed whitespace-pre-line ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
+        style={{ backgroundColor: '#ffffff' }}
+      >
         {text}
         {/* 箭頭 - 指向上方 */}
-        <div className="absolute -top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-white border-l border-t border-slate-200 rotate-45"></div>
+        <div className="absolute -top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-white border-l border-t border-slate-200 rotate-45" style={{ backgroundColor: '#ffffff' }}></div>
       </div>
     </div>
   );
@@ -180,10 +183,10 @@ const CustomRadarTick = ({ payload, x, y, textAnchor, stroke, radius }) => {
       </text>
       {def && (
         <foreignObject x={x - 80} y={y + 10} width="160" height="100" className={`overflow-visible transition-opacity duration-200 pointer-events-none z-50 ${visible ? 'opacity-100' : 'opacity-0'}`}>
-          <div className="bg-white border border-slate-200 text-slate-600 text-xs p-2.5 rounded-lg shadow-xl relative mt-1 text-center">
+          <div className="bg-white border border-slate-200 text-slate-600 text-xs p-2.5 rounded-lg shadow-xl relative mt-1 text-center" style={{ backgroundColor: '#ffffff' }}>
             <div className="font-bold text-[#144679] mb-1">{def.simple}</div>
             <div className="leading-relaxed text-[10px] text-slate-500">{def.desc}</div>
-            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-l border-t border-slate-200 rotate-45"></div>
+            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-l border-t border-slate-200 rotate-45" style={{ backgroundColor: '#ffffff' }}></div>
           </div>
         </foreignObject>
       )}
