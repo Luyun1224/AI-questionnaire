@@ -71,7 +71,7 @@ const METRIC_DEFINITIONS = {
 
 // 修正：移除 overflow-hidden，避免 Tooltip 被切掉
 const Card = ({ children, className = "" }) => (
-  <div className={`bg-slate-800/60 backdrop-blur-md border border-slate-700/50 rounded-2xl p-5 shadow-lg transition-all hover:border-sky-500/30 hover:shadow-sky-500/10 relative ${className}`}>
+  <div className={`bg-slate-800/80 backdrop-blur-md border border-slate-600/60 rounded-2xl p-6 shadow-xl transition-all hover:border-sky-500/40 hover:shadow-sky-500/20 relative ${className}`}>
     {children}
   </div>
 );
@@ -81,30 +81,30 @@ const StatCard = ({ title, value, icon: Icon, trend, trendUp, sub, colorClass, f
   <Card className="group">
     {/* 裝飾層：獨立裁切，不影響內容 */}
     <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
-        <div className={`absolute -top-2 -right-2 opacity-[0.08] group-hover:opacity-[0.15] transition-opacity transform group-hover:scale-110 duration-500 ${colorClass.replace('bg-', 'text-')}`}>
-        <Icon size={120} />
+        <div className={`absolute -top-2 -right-2 opacity-[0.1] group-hover:opacity-[0.2] transition-opacity transform group-hover:scale-110 duration-500 ${colorClass.replace('bg-', 'text-')}`}>
+        <Icon size={140} />
         </div>
     </div>
 
     {/* 內容層：z-10 確保在裝飾之上 */}
     <div className="flex justify-between items-start relative z-10">
       <div>
-        <div className="flex items-center gap-2 mb-2">
-          <h3 className="text-slate-300 text-base font-bold uppercase tracking-wider">{title}</h3>
+        <div className="flex items-center gap-2 mb-3">
+          <h3 className="text-slate-100 text-lg font-extrabold uppercase tracking-wider">{title}</h3>
           {tooltip && <InfoTooltip text={tooltip} />}
         </div>
-        <div className="text-5xl font-extrabold text-white tracking-tight mt-2 drop-shadow-sm">{value}</div>
+        <div className="text-6xl font-black text-white tracking-tight mt-3 drop-shadow-md">{value}</div>
       </div>
-      <div className={`p-4 rounded-xl shadow-inner ${colorClass} bg-opacity-20 border border-white/10`}>
-        <Icon size={28} className="text-white" />
+      <div className={`p-4 rounded-xl shadow-inner ${colorClass} bg-opacity-30 border border-white/20`}>
+        <Icon size={32} className="text-white" />
       </div>
     </div>
-    <div className="mt-5 pt-4 border-t border-slate-700/50 flex justify-between items-center relative z-10">
-      <span className="text-sm text-slate-400 font-medium">{footerLabel || "即時數據"}</span>
-      <div className={`flex items-center gap-1 font-bold text-base ${trendUp ? 'text-emerald-400' : 'text-rose-400'}`}>
-         {trend === 'Live' && <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse mr-1"></div>}
+    <div className="mt-6 pt-5 border-t border-slate-600/60 flex justify-between items-center relative z-10">
+      <span className="text-base text-slate-300 font-bold">{footerLabel || "即時數據"}</span>
+      <div className={`flex items-center gap-1 font-bold text-lg ${trendUp ? 'text-emerald-400' : 'text-rose-400'}`}>
+         {trend === 'Live' && <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse mr-1.5"></div>}
          {trend}
-         <span className="text-xs text-slate-400 font-medium ml-1 normal-case opacity-80">({sub})</span>
+         <span className="text-sm text-slate-300 font-medium ml-1 normal-case opacity-90">({sub})</span>
       </div>
     </div>
   </Card>
@@ -375,9 +375,12 @@ const Dashboard = () => {
               </div>
               <div className="space-y-4">
                  {Object.entries(METRIC_DEFINITIONS).slice(0, 4).map(([key, def]) => (
-                   <div key={key} className="bg-slate-800/50 p-3 rounded-lg border border-slate-700/50 flex justify-between items-center">
-                      <div><span className="font-bold text-slate-200 text-sm block">{def.title}</span><span className="text-xs text-slate-400">{def.desc}</span></div>
-                      <span className="text-xs bg-sky-900/30 text-sky-300 px-2 py-1 rounded font-bold border border-sky-500/20 whitespace-nowrap ml-3">{def.simple}</span>
+                   <div key={key} className="bg-slate-800/80 p-5 rounded-xl border border-slate-600 flex justify-between items-center shadow-md hover:bg-slate-800 transition-colors">
+                      <div>
+                        <span className="font-extrabold text-white text-xl block mb-1.5">{def.title}</span>
+                        <span className="text-base text-slate-200 font-medium leading-relaxed">{def.desc}</span>
+                      </div>
+                      <span className="text-base bg-sky-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg whitespace-nowrap ml-4 border border-sky-400/30">{def.simple}</span>
                    </div>
                  ))}
               </div>
@@ -704,6 +707,10 @@ const Dashboard = () => {
 
       </main>
       
+      <footer className="text-center py-8 text-slate-400 text-sm font-medium border-t border-slate-800/50 mt-12 relative z-10">
+        © 2025 奇美醫院教學部
+      </footer>
+
       {/* Custom Styles */}
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
