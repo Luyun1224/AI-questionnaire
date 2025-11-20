@@ -21,9 +21,13 @@ const COLORS = {
   text: '#f8fafc',
   grid: '#334155',
   roles: {
-    '醫療人員': '#38bdf8', 
-    '醫療行政': '#f472b6', 
-    '其他': '#10b981'      
+    '醫師': '#38bdf8',
+    '護理人員': '#f472b6',
+    '醫事人員': '#10b981',
+    '行政人員': '#fbbf24',
+    '資訊與研究': '#a78bfa',
+    '學生': '#fb923c',
+    '其他': '#94a3b8'
   }
 };
 
@@ -157,8 +161,8 @@ const Dashboard = () => {
     if (viewMode === 'deep-dive') {
        return dimensions.map(dim => {
          const item = { subject: dim.name, fullMark: 5 };
-         ['醫療人員', '醫療行政', '其他'].forEach(r => {
-            const roleData = rawData.filter(d => d.role === r); // Use rawData for full comparison
+         ['醫師', '護理人員', '醫事人員', '行政人員', '資訊與研究', '學生', '其他'].forEach(r => {
+            const roleData = rawData.filter(d => d.role === r);
             if (roleData.length > 0) {
                 item[r] = (roleData.reduce((acc, cur) => acc + cur[dim.key], 0) / roleData.length).toFixed(2);
             } else {
@@ -178,7 +182,7 @@ const Dashboard = () => {
 
   const roleComparisonData = useMemo(() => {
      if (rawData.length === 0) return [];
-     return ['醫療人員', '醫療行政', '其他'].map(r => {
+     return ['醫師', '護理人員', '醫事人員', '行政人員', '資訊與研究', '學生', '其他'].map(r => {
        const roleData = rawData.filter(d => d.role === r);
        const count = roleData.length;
        if (count === 0) return { name: r, '整體滿意度': 0, '課程設計': 0, '學習成效': 0 };
@@ -481,8 +485,12 @@ const Dashboard = () => {
                       <PolarGrid stroke="#475569" />
                       <PolarAngleAxis dataKey="subject" tick={{ fill: '#e2e8f0', fontWeight: 700, fontSize: 12 }} />
                       <PolarRadiusAxis angle={30} domain={[0, 5]} tick={{ fill: '#94a3b8' }} />
-                      <Radar name="醫療人員" dataKey="醫療人員" stroke={COLORS.roles['醫療人員']} strokeWidth={3} fill="transparent" />
-                      <Radar name="醫療行政" dataKey="醫療行政" stroke={COLORS.roles['醫療行政']} strokeWidth={3} fill="transparent" />
+                      <Radar name="醫師" dataKey="醫師" stroke={COLORS.roles['醫師']} strokeWidth={3} fill="transparent" />
+                      <Radar name="護理人員" dataKey="護理人員" stroke={COLORS.roles['護理人員']} strokeWidth={3} fill="transparent" />
+                      <Radar name="醫事人員" dataKey="醫事人員" stroke={COLORS.roles['醫事人員']} strokeWidth={3} fill="transparent" />
+                      <Radar name="行政人員" dataKey="行政人員" stroke={COLORS.roles['行政人員']} strokeWidth={3} fill="transparent" />
+                      <Radar name="資訊與研究" dataKey="資訊與研究" stroke={COLORS.roles['資訊與研究']} strokeWidth={3} fill="transparent" />
+                      <Radar name="學生" dataKey="學生" stroke={COLORS.roles['學生']} strokeWidth={3} fill="transparent" />
                       <Radar name="其他" dataKey="其他" stroke={COLORS.roles['其他']} strokeWidth={3} fill="transparent" />
                       <Legend />
                       <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px' }} />
@@ -507,7 +515,7 @@ const Dashboard = () => {
                     </tr>
                   </thead>
                   <tbody className="font-medium">
-                    {['醫療人員', '醫療行政', '其他'].map((role) => {
+                    {['醫師', '護理人員', '醫事人員', '行政人員', '資訊與研究', '學生', '其他'].map((role) => {
                       const roleData = rawData.filter(d => d.role === role);
                       const getAvg = (key) => roleData.length ? (roleData.reduce((acc, cur) => acc + cur[key], 0) / roleData.length).toFixed(2) : '-';
                       return (
