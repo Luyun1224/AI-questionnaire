@@ -83,7 +83,7 @@ const Card = ({ children, className = "" }) => (
 
 // 修正：StatCard 內部獨立處理裝飾圖示的裁切
 const StatCard = ({ title, value, icon: Icon, trend, trendUp, sub, colorClass, footerLabel, tooltip }) => (
-  <Card className="group">
+  <Card className="group hover:z-50">
     {/* 裝飾層：獨立裁切，不影響內容 */}
     <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
         <div className={`absolute -top-4 -right-4 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity transform group-hover:scale-110 duration-500 text-slate-900`}>
@@ -91,8 +91,8 @@ const StatCard = ({ title, value, icon: Icon, trend, trendUp, sub, colorClass, f
         </div>
     </div>
 
-    {/* 內容層：z-10 確保在裝飾之上 */}
-    <div className="flex justify-between items-start relative z-10">
+    {/* 內容層：z-20 確保在裝飾之上，且高於 Footer 以免 Tooltip 被遮擋 */}
+    <div className="flex justify-between items-start relative z-20">
       <div>
         <div className="flex items-center gap-2 mb-3">
           <h3 className="text-slate-600 text-lg font-extrabold uppercase tracking-wider">{title}</h3>
