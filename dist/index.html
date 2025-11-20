@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI 數位賦能工作坊｜課後回饋與滿意度</title>
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="AI 數位賦能工作坊｜課後回饋與滿意度" />
+<meta property="og:description" content="感謝您的參與，請填寫回饋讓我們做得更好。" />
+<meta property="og:url" content="https://luyun1224.github.io/AI-questionnaire/" />
+
+<style>
+:root { 
+    /* 依據 123.jpg 提取的科技深藍配色 */
+    --bg1:#080b12; 
+    --bg2:#141a23; 
+    --primary:#38bdf8; /* 亮天空藍 */
+    --text:#f8fafc; 
+    
+    --card-bg: rgba(15, 23, 42, 0.6); /* 深藍半透明 */
+    --card-border: rgba(56, 189, 248, 0.3); /* 亮藍邊框 */
+    
+    --input-bg: rgba(30, 41, 59, 0.5);
+    --input-border: #64748b;
+    
+    --pill-active-bg: #0ea5e9;
+    --pill-active-border: #7dd3fc;
+    --pill-active-text: #ffffff;
+    
+    --submit-bg: linear-gradient(135deg, #0ea5e9, #2563eb);
+    --submit-text: #ffffff;
+}
+body { 
+    margin:0; 
+    font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; 
+    color:var(--text); 
+    background:
+        radial-gradient(circle at top, rgba(56,189,248,.15), transparent 50%), 
+        linear-gradient(135deg, rgba(8,11,18,0.9), rgba(20,26,35,0.9)),
+        url('/AI-questionnaire/assets/123-8603b8be.jpg') center/cover no-repeat fixed;
+    min-height:100vh; 
+    line-height: 1.6;
+}
+.container { max-width:900px; margin:0 auto; padding:24px; }
+.hero-grid { display:flex; flex-direction:column; gap:16px; margin-top:16px; }
+
+/* 海報圖片樣式 */
+.poster-container {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0 20px 60px rgba(14, 165, 233, 0.2);
+  border: 1px solid var(--card-border);
+  background: rgba(0,0,0,.3);
+}
+.poster-image {
+  width: 100%;
+  height: auto;
+  max-height: 450px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center top;
+     object-position: center top;
+  display: block;
+}
+
+.hero-card { border-radius:20px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.4); position:relative; }
+
+.hero-card.hero-info { 
+    background: rgba(3, 7, 18, 0.8);
+    backdrop-filter: blur(10px);
+    padding:32px 28px; 
+    color:#f8fafc; 
+    border:1px solid var(--card-border);
+    text-align: center;
+}
+.hero-card.hero-info::before { 
+    content:""; 
+    position:absolute; 
+    inset:-20%; 
+    background:radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.15), transparent 55%), 
+               radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.15), transparent 60%); 
+    animation:pulseGlow 6s ease-in-out infinite; 
+    filter:blur(20px); 
+    z-index:0; 
+}
+.hero-card.hero-info > * { position:relative; z-index:2; }
+
+h1 { 
+    font-size:32px; 
+    margin:0 0 12px 0; 
+    letter-spacing:1px; 
+    /* 科技感漸層字 */
+    background:linear-gradient(120deg, #e0f2fe 0%, #7dd3fc 50%, #38bdf8 100%); 
+    background-size:200% 100%; 
+    -webkit-background-clip:text; 
+    color:transparent; 
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    animation:heroGlow 4s ease-in-out infinite; 
+}
+.badge { 
+    display:inline-block; 
+    background:rgba(14, 165, 233, 0.2); 
+    color:#bae6fd; 
+    padding:6px 12px; 
+    border-radius:999px; 
+    font-size:12px; 
+    letter-spacing:.5px; 
+    border:1px solid rgba(56, 189, 248, 0.4); 
+    margin-bottom: 12px;
+}
+.hero-subtitle { margin:0; font-size:16px; line-height:1.6; color:#94a3b8; }
+
+.card { 
+    background: var(--card-bg);
+    border-radius:16px; 
+    padding:24px; 
+    margin:20px 0; 
+    box-shadow:0 10px 30px rgba(0,0,0,.3); 
+    border:1px solid var(--card-border); 
+    backdrop-filter:blur(12px); 
+    color:#f8fafc; 
+}
+.section-title { 
+    font-weight:700; 
+    font-size:20px; 
+    margin:0 0 16px 0; 
+    color:#38bdf8; 
+    border-bottom: 1px solid rgba(56, 189, 248, 0.3); 
+    padding-bottom: 12px;
+}
+
+.grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px 20px; }
+
+label { display:block; font-weight:600; margin-bottom:8px; color: #e0f2fe; }
+
+select, input[type="text"], textarea { 
+    width:100%; 
+    border:1px solid var(--input-border); 
+    border-radius:10px; 
+    padding:12px; 
+    font-size:15px; 
+    outline:none; 
+    background: var(--input-bg);
+    color: var(--text);
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+select:focus, input:focus, textarea:focus {
+    border-color: var(--primary);
+    background: rgba(56, 189, 248, 0.1);
+}
+select option { background: #0f172a; color: var(--text); }
+
+/* Likert Scale Styles */
+.likert { display:flex; gap:8px; flex-wrap:wrap; }
+.pill { 
+    padding:10px 6px; 
+    border:1px solid var(--input-border); 
+    border-radius:8px; 
+    cursor:pointer; 
+    -webkit-user-select:none; 
+       -moz-user-select:none; 
+            user-select:none; 
+    transition:all .2s;
+    font-size: 14px;
+    min-width: 32px;
+    text-align: center;
+    background: rgba(255,255,255,0.05);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pill input { display:none; }
+.pill:hover { background: rgba(56, 189, 248, 0.2); }
+.pill.active { 
+    background: var(--pill-active-bg); 
+    border-color: var(--pill-active-border); 
+    color: var(--pill-active-text);
+    font-weight: 700;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+    transform: scale(1.05);
+}
+
+.submit { 
+    display:block; 
+    width: 100%;
+    background: var(--submit-bg); 
+    color: var(--submit-text); 
+    border:0; 
+    padding:16px; 
+    border-radius:12px; 
+    font-weight:700; 
+    font-size: 18px;
+    cursor:pointer; 
+    margin-top:24px; 
+    box-shadow:0 10px 20px rgba(14, 165, 233, 0.3); 
+    transition: all .3s;
+}
+.submit:hover { transform: translateY(-2px); box-shadow:0 15px 30px rgba(14, 165, 233, 0.5); filter: brightness(1.1); }
+.submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.note { font-size:14px; color:#94a3b8; margin-top: -8px; margin-bottom: 16px; font-style: italic; }
+
+/* Sub-group Cards */
+.sub-group-grid { display:grid; gap: 24px; margin-top: 16px; margin-bottom: 24px; }
+.sub-group-card {
+    background: rgba(0,0,0, 0.3);
+    border-radius:12px; 
+    padding:20px; 
+    border:1px solid rgba(255,255,255, 0.05);
+}
+.sub-group-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    color: #bae6fd; 
+    border-bottom: 1px dashed rgba(56, 189, 248, 0.3);
+    padding-bottom: 8px;
+}
+.likert-item { margin-bottom: 24px; }
+.likert-item:last-child { margin-bottom: 0; }
+.likert-item label { margin-bottom: 10px; line-height: 1.5; color: #f8fafc; font-weight: 500; font-size: 16px; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden; transition: all .3s; z-index: 100;
+}
+.modal-overlay.visible { opacity: 1; visibility: visible; }
+.modal-content {
+  background: #0f172a;
+  border: 1px solid var(--primary);
+  border-radius: 16px;
+  padding: 32px;
+  width: 90%; max-width: 400px;
+  box-shadow: 0 0 40px rgba(56, 189, 248, 0.4);
+  transform: scale(0.9); transition: all .3s;
+  text-align: center;
+  color: #fff;
+}
+.modal-overlay.visible .modal-content { transform: scale(1); }
+.modal-content h2 { margin: 0 0 12px 0; color: var(--primary); font-size: 24px; }
+.modal-content button {
+  background: var(--primary); color: #0f172a; border: 0; padding: 10px 24px;
+  border-radius: 99px; font-weight: 700; cursor: pointer; margin-top: 24px;
+  font-size: 16px;
+}
+
+footer { text-align:center; padding:40px 0 20px; font-size:14px; color:rgba(255,255,255,0.4); }
+
+@keyframes heroGlow {
+  0%, 100% { background-position:0% 50%; }
+  50% { background-position:100% 50%; }
+}
+@keyframes pulseGlow {
+  0% { opacity:0.3; transform: scale(1); }
+  50% { opacity:0.6; transform: scale(1.02); }
+  100% { opacity:0.3; transform: scale(1); }
+}
+
+/* RWD */
+@media (max-width:600px) {
+  .container { padding:16px; }
+  h1 { font-size:26px; }
+  .likert .pill { padding: 12px 4px; font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-content">
+    <h2 id="modal-title">提示</h2>
+    <p id="modal-message">訊息內容</p>
+    <button id="modal-close">確定</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="hero-grid">
+    <!-- 海報圖片 -->
+    <div class="poster-container">
+      <img src="/AI-questionnaire/assets/poster-a2f6d950.jpg" alt="AI 工作坊海報" class="poster-image">
+    </div>
+    
+    <div class="hero-card hero-info">
+      <div class="badge">Workshop Survey</div>
+      <h1>AI 數位賦能工作坊</h1>
+      <p class="hero-subtitle">感謝您參與本次工作坊！請填寫下方的課後回饋與滿意度，您的意見是我們持續優化的動力。</p>
+    </div>
+  </div>
+
+  <!-- 隱私聲明 -->
+  <div class="card">
+    <div class="section-title">隱私權聲明 (共用)</div>
+    <p class="note">本問卷採匿名方式進行，資料僅供教學品質改善與學術研究分析使用。</p>
+    <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 10px; background: rgba(56, 189, 248, 0.1); border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);">
+      <input type="checkbox" id="consent" style="width: 20px; height: 20px; accent-color: var(--primary);">
+      <span>我已閱讀並同意參與匿名調查</span>
+    </label>
+  </div>
+
+  <!-- 基本資料 -->
+  <div class="card">
+    <div class="section-title">1. 基本資料 (Basic Info)</div>
+    <div class="grid">
+      <div>
+        <label for="role">您的角色別</label>
+        <select id="role">
+          <option value="">-- 請選擇 --</option>
+          <option value="醫師">醫師</option>
+          <option value="護理人員">護理人員</option>
+          <option value="醫事人員">醫事人員</option>
+          <option value="行政人員">行政人員</option>
+          <option value="資訊與研究">資訊與研究</option>
+          <option value="學生">學生</option>
+          <option value="其他">其他</option>
+        </select>
+      </div>
+      <div>
+        <label for="role_other">若選其他，請說明：</label>
+        <input type="text" id="role_other" placeholder="例如：醫學生、資訊人員">
+      </div>
+    </div>
+  </div>
+
+  <!-- 整合問卷區域 -->
+  <div class="card">
+    <div class="section-title">第一部分：後測問卷 (Post-Test)</div>
+    <p class="note">請依照課程結束後的真實感受填寫 (1=非常不同意, 5=非常同意)</p>
+    
+    <!-- 後測題目容器 -->
+    <div id="post-likert-container"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">第二部分：滿意度與綜合回饋 (Satisfaction)</div>
+    <p class="note">請給予我們課程安排的建議 (1=非常不滿意, 5=非常滿意)</p>
+    
+    <!-- 滿意度題目容器 -->
+    <div id="sat-likert-container"></div>
+    
+    <div class="sub-group-card" style="margin-top: 24px;">
+        <h3>綜合開放式回饋</h3>
+        
+        <label>13. 本次課程讓您最有收穫或最有感的部分是？</label>
+        <textarea id="open-1" rows="3" placeholder="請輸入您的分享..."></textarea>
+
+        <label style="margin-top: 16px;">14. 我計畫如何運用今天的收穫？（具體行動）</label>
+        <textarea id="open-2" rows="3" placeholder="例如：嘗試使用...工具來解決...問題"></textarea>
+
+        <label style="margin-top: 16px;">15. 活動有哪些地方可改善？</label>
+        <textarea id="open-3" rows="3" placeholder="流程、內容或設備建議..."></textarea>
+
+        <label style="margin-top: 16px;">16. 請跟我們分享你完成的網頁連結 (選填)：</label>
+        <textarea id="open-4" rows="2" placeholder="請貼上網址..."></textarea>
+    </div>
+  </div>
+    
+  <button class="submit" id="submit-btn" onclick="submitCombinedSurvey()">提交完整問卷</button>
+
+  <footer>© 2025 AI數位賦能工作坊 · Team Chi Mei</footer>
+</div>
+
+<script>
+/* ---------------------------------- */
+/* UI 控制 (Modal) */
+/* ---------------------------------- */
+const modalOverlay = document.getElementById('modal-overlay');
+const modalTitle = document.getElementById('modal-title');
+const modalMessage = document.getElementById('modal-message');
+const modalClose = document.getElementById('modal-close');
+
+function showModal(title, message) {
+  modalTitle.textContent = title;
+  modalMessage.textContent = message;
+  modalOverlay.classList.add('visible');
+}
+function hideModal() { modalOverlay.classList.remove('visible'); }
+modalClose.onclick = hideModal;
+modalOverlay.onclick = (e) => { if (e.target === modalOverlay) hideModal(); };
+
+/* ---------------------------------- */
+/* 問卷題目資料 */
+/* ---------------------------------- */
+
+const POST_TEST_GROUPS = [
+  {
+    title: "學習成效",
+    startIndex: 1,
+    items: [
+      "我能具體說明 AI 工具如何應用於臨床與教學評量。",
+      "我能辨識常見 AI 工具背後的原理與限制。",
+      "我能理解 AI 在學習評量（assessment）中的風險與優勢。"
+    ]
+  },
+  {
+    title: "自我效能",
+    startIndex: 4,
+    items: [
+      "我更有信心將 AI 直接用於課程準備、臨床教學、或是目前工作內容。",
+      "經由這次工作坊後，面對新的 AI 工具，我能快速理解並嘗試操作。"
+    ]
+  },
+  {
+    title: "轉化學習",
+    startIndex: 6,
+    items: [
+      "經由這次工作坊後，我重新思考以往的教學或工作方式是否需要更新或調整。",
+      "本課程促使我願意採用新的教學策略或臨床工作模式。"
+    ]
+  },
+  {
+    title: "行為意圖",
+    startIndex: 8,
+    items: [
+      "我預期會在未來兩週內把至少一項 AI 工具整合進我的工作流程。",
+      "我會主動尋找 AI 工具協助改善特定教學或臨床流程。"
+    ]
+  }
+];
+
+const SATISFACTION_GROUPS = [
+  {
+    title: "整體評價",
+    startIndex: 1,
+    items: [
+      "課程目標與內容結構清晰。",
+      "課程難度與深度適中。",
+      "授課方式有助於理解 AI 的核心觀念。"
+    ]
+  },
+  {
+    title: "學習設計",
+    startIndex: 4,
+    items: [
+      "課程內容具備立即可應用於臨床/教學的實用性。",
+      "活動安排符合成人學習者的需求（自主性、經驗連結、問題導向）。"
+    ]
+  },
+  {
+    title: "教學品質與支持",
+    startIndex: 6,
+    items: [
+      "場地設備與課程資訊提供充足。",
+      "課程時間規劃恰當且流暢。",
+      "我願意推薦同事參加未來的 AI 賦能課程。"
+    ]
+  }
+];
+
+/* ---------------------------------- */
+/* 渲染函式 */
+/* ---------------------------------- */
+function renderGroupedLikert(containerId, groups, prefix) {
+  const container = document.getElementById(containerId);
+  const groupGrid = document.createElement('div');
+  groupGrid.className = "sub-group-grid";
+  container.appendChild(groupGrid);
+
+  groups.forEach(group => {
+    const groupCard = document.createElement('div');
+    groupCard.className = "sub-group-card";
+    
+    const title = document.createElement('h3');
+    title.textContent = group.title;
+    groupCard.appendChild(title);
+
+    group.items.forEach((text, idx) => {
+      const questionNumber = group.startIndex + idx;
+      
+      const row = document.createElement('div');
+      row.className = "likert-item";
+      
+      const label = document.createElement('label');
+      label.textContent = `${questionNumber}. ${text}`; 
+      row.appendChild(label);
+
+      const likertScale = document.createElement('div');
+      likertScale.className = "likert";
+      
+      const radioName = `${prefix}_${questionNumber}`;
+      
+      ["1","2","3","4","5"].forEach(value => {
+        const pill = document.createElement('label');
+        pill.className = "pill";
+        
+        const input = document.createElement('input');
+        input.type = "radio";
+        input.name = radioName;
+        input.value = value;
+
+        pill.appendChild(input);
+        pill.appendChild(document.createTextNode(value));
+
+        pill.addEventListener("click", () => {
+          const siblings = row.querySelectorAll('.pill');
+          siblings.forEach(s => s.classList.remove('active'));
+          pill.classList.add('active');
+          input.checked = true;
+        });
+
+        likertScale.appendChild(pill);
+      });
+
+      row.appendChild(likertScale);
+      groupCard.appendChild(row);
+    });
+    
+    groupGrid.appendChild(groupCard);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderGroupedLikert("post-likert-container", POST_TEST_GROUPS, "post");
+    renderGroupedLikert("sat-likert-container", SATISFACTION_GROUPS, "sat");
+});
+
+
+/* ---------------------------------- */
+/* 提交邏輯 */
+/* ---------------------------------- */
+// 請確認這是您 AI 問卷專案的 Apps Script 網址
+const DEPLOYED_URL = "https://script.google.com/macros/s/AKfycbz4YSi0cs7cV8dM3Sm70MMTXbov6FvQk5ZvnmyEkrOrZiwaqhgxeyaf0uMdkqizU0n-/exec";
+
+function getRadioValue(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : "";
+}
+
+function validateLikert(groups, prefix) {
+    const missing = [];
+    groups.forEach(group => {
+        group.items.forEach((_, idx) => {
+            const qNum = group.startIndex + idx;
+            if (!getRadioValue(`${prefix}_${qNum}`)) {
+                missing.push(`${prefix === 'post' ? '後測' : '滿意度'} 第${qNum}題`);
+            }
+        });
+    });
+    return missing;
+}
+
+async function submitCombinedSurvey() {
+    // 1. 檢查同意與基本資料
+    if (!document.getElementById("consent").checked) {
+        showModal("提醒", "請先勾選「我已閱讀並同意參與匿名調查」。");
+        return;
+    }
+    const role = document.getElementById("role").value;
+    const roleOther = document.getElementById("role_other").value;
+
+    if (!role) {
+        showModal("提醒", "請先選擇您的「角色別」。");
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+    }
+
+    // 2. 檢查 Likert 必填
+    const missingPost = validateLikert(POST_TEST_GROUPS, "post");
+    const missingSat = validateLikert(SATISFACTION_GROUPS, "sat");
+    
+    const allMissing = [...missingPost, ...missingSat];
+
+    if (allMissing.length > 0) {
+        showModal("未完成", `尚有題目未填寫：\n${allMissing.slice(0, 3).join(", ")}${allMissing.length > 3 ? '...等' : ''}`);
+        return;
+    }
+
+    // 3. 準備資料 Payload
+    let payload = {
+        timestamp: new Date().toISOString(),
+        surveyName: "AI後測+滿意度", // 識別名稱
+        role: role,
+        role_other: role === '其他' ? roleOther : ""
+    };
+
+    // 收集後測 Likert
+    POST_TEST_GROUPS.forEach(group => {
+        group.items.forEach((_, idx) => {
+            const qNum = group.startIndex + idx;
+            payload[`post_${qNum}`] = getRadioValue(`post_${qNum}`);
+        });
+    });
+
+    // 收集滿意度 Likert
+    SATISFACTION_GROUPS.forEach(group => {
+        group.items.forEach((_, idx) => {
+            const qNum = group.startIndex + idx;
+            payload[`sat_${qNum}`] = getRadioValue(`sat_${qNum}`);
+        });
+    });
+    
+    // 收集整合後的開放式問題 (13-16)
+    payload[`open_1`] = document.getElementById("open-1").value.replace(/\n/g, " "); // 最有收穫
+    payload[`open_2`] = document.getElementById("open-2").value.replace(/\n/g, " "); // 未來計畫
+    payload[`open_3`] = document.getElementById("open-3").value.replace(/\n/g, " "); // 建議改善
+    payload[`open_4`] = document.getElementById("open-4").value.replace(/\n/g, " "); // 網頁連結
+
+    console.log("Sending:", payload);
+
+    // 4. 傳送
+    const btn = document.getElementById("submit-btn");
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "傳送中...";
+
+    try {
+        await fetch(DEPLOYED_URL, {
+            method: "POST",
+            mode: "no-cors",
+            body: JSON.stringify(payload),
+            // 使用 text/plain 避免 CORS 錯誤
+            headers: { "Content-Type": "text/plain" }
+        });
+        
+        showModal("提交成功", "您的回饋與滿意度已送出，非常感謝您的參與！");
+        btn.textContent = "問卷已提交";
+
+    } catch (e) {
+        console.error(e);
+        showModal("錯誤", "提交失敗，請檢查網路連線或稍後再試。");
+        btn.disabled = false;
+        btn.textContent = originalText;
+    }
+}
+</script>
+</body>
+</html>
