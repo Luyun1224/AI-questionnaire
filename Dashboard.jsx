@@ -47,7 +47,7 @@ const COLORS = {
 const METRIC_DEFINITIONS = {
   learning_effectiveness: {
     title: "學習成效",
-    desc: "包含：國家健康藍圖、AI醫療趨勢、學習型照護理解。",
+    desc: "計算方式：取問卷前三題（國家健康藍圖、AI醫療趨勢、學習型照護理解）的平均分數。代表學員對課程核心知識的認知程度。",
     simple: "懂不懂？"
   },
   self_efficacy: {
@@ -67,7 +67,7 @@ const METRIC_DEFINITIONS = {
   },
   nps: {
     title: "淨推薦分數",
-    desc: "反映學員的忠誠度與口碑傳播意願。",
+    desc: "計算方式：(推薦者% - 批評者%) × 100。推薦者為滿意度 ≥ 4.5分，批評者為滿意度 ≤ 3分。反映學員的忠誠度與口碑傳播意願。",
     simple: "推不推薦？"
   }
 };
@@ -83,7 +83,7 @@ const Card = ({ children, className = "" }) => (
 
 // 修正：StatCard 內部獨立處理裝飾圖示的裁切
 const StatCard = ({ title, value, icon: Icon, trend, trendUp, sub, colorClass, footerLabel, tooltip }) => (
-  <Card className="group overflow-hidden">
+  <Card className="group">
     {/* 裝飾層：獨立裁切，不影響內容 */}
     <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
         <div className={`absolute -top-4 -right-4 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity transform group-hover:scale-110 duration-500 text-slate-900`}>
@@ -191,6 +191,65 @@ const CustomRadarTick = ({ payload, x, y, textAnchor, stroke, radius }) => {
   );
 };
 
+
+const CustomDropdown = ({ options, value, onChange, label, icon: Icon }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = React.useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center space-x-3 bg-white px-6 py-2.5 rounded-full border border-slate-200 shadow-sm group hover:border-[#144679]/30 transition-colors min-w-[240px] justify-between"
+      >
+        <div className="flex items-center">
+          <span className="text-slate-400 text-xs uppercase font-extrabold tracking-wider whitespace-nowrap mr-3">{label}:</span>
+          <div className="flex items-center text-slate-700 font-bold text-sm">
+            {Icon && <Icon className="w-4 h-4 text-[#144679] mr-2" />}
+            {value === 'All' ? '全部角色 (All Roles)' : value}
+          </div>
+        </div>
+        <div className="text-slate-400">
+          <svg className={`fill-current h-4 w-4 transform transition-transform ${isOpen ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+        </div>
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-full right-0 mt-2 w-full bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden z-50 animate-fadeIn">
+          <div className="max-h-64 overflow-y-auto custom-scrollbar">
+            <div 
+              className={`px-4 py-3 cursor-pointer hover:bg-slate-50 transition-colors flex items-center justify-between ${value === 'All' ? 'bg-slate-50 text-[#144679]' : 'text-slate-700'}`}
+              onClick={() => { onChange('All'); setIsOpen(false); }}
+            >
+              <span className="font-bold text-sm">全部角色 (All Roles)</span>
+              {value === 'All' && <div className="w-2 h-2 rounded-full bg-[#144679]"></div>}
+            </div>
+            {options.map(role => (
+              <div 
+                key={role} 
+                className={`px-4 py-3 cursor-pointer hover:bg-slate-50 transition-colors flex items-center justify-between ${value === role ? 'bg-slate-50 text-[#144679]' : 'text-slate-700'}`}
+                onClick={() => { onChange(role); setIsOpen(false); }}
+              >
+                <span className="font-bold text-sm">{role}</span>
+                {value === role && <div className="w-2 h-2 rounded-full bg-[#144679]"></div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Dashboard = () => {
   const [viewMode, setViewMode] = useState('overview'); 
@@ -436,26 +495,13 @@ const Dashboard = () => {
              {viewMode === 'overview' && (
                <div className="flex flex-col items-end ml-0 sm:ml-auto gap-2">
                   <img src={chimeiImg} alt="Chimei" className="h-8 object-contain" />
-                  <div className="flex items-center space-x-3 bg-white px-6 py-2.5 rounded-full border border-slate-200 shadow-sm group hover:border-[#144679]/30 transition-colors min-w-[240px]">
-                    <span className="text-slate-400 text-xs uppercase font-extrabold tracking-wider whitespace-nowrap">FILTER:</span>
-                    <div className="flex items-center relative w-full">
-                      <Filter className="w-4 h-4 text-[#144679] mr-2 flex-shrink-0" />
-                      <select 
-                        value={selectedRole} 
-                        onChange={(e) => setSelectedRole(e.target.value)}
-                        className="bg-white text-slate-700 border-none text-sm font-bold focus:ring-0 py-1 pr-8 w-full cursor-pointer hover:text-[#144679] transition-colors outline-none appearance-none"
-                        style={{ backgroundColor: '#ffffff', color: '#334155' }}
-                      >
-                        <option value="All" className="bg-white text-slate-700">全部角色 (All Roles)</option>
-                        {Object.keys(COLORS.roles).map(role => (
-                          <option key={role} value={role} className="bg-white text-slate-700">{role}</option>
-                        ))}
-                      </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                      </div>
-                    </div>
-                  </div>
+                  <CustomDropdown 
+                    options={Object.keys(COLORS.roles)} 
+                    value={selectedRole} 
+                    onChange={setSelectedRole} 
+                    label="FILTER"
+                    icon={Filter}
+                  />
                </div>
              )}
           </div>
@@ -570,7 +616,7 @@ const Dashboard = () => {
               <Card className="flex flex-col h-[400px] bg-white border-slate-200">
                  <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-3">
                     <Sparkles size={20} className="text-[#144679]" />
-                    <h3 className="text-lg font-bold text-slate-800">✨ 學習收穫</h3>
+                    <h3 className="text-lg font-bold text-slate-800">學習收穫</h3>
                     <span className="text-xs text-slate-400 ml-auto font-mono">{qualitativeFeedbacks.harvest.length} 則</span>
                  </div>
                  <div className="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar">
@@ -593,7 +639,7 @@ const Dashboard = () => {
               <Card className="flex flex-col h-[400px] bg-white border-slate-200">
                  <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-3">
                     <Lightbulb size={20} className="text-[#FAB346]" />
-                    <h3 className="text-lg font-bold text-slate-800">💡 建議改善</h3>
+                    <h3 className="text-lg font-bold text-slate-800">建議改善</h3>
                     <span className="text-xs text-slate-400 ml-auto font-mono">{qualitativeFeedbacks.suggestion.length} 則</span>
                  </div>
                  <div className="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar">
@@ -616,7 +662,7 @@ const Dashboard = () => {
               <Card className="flex flex-col h-[400px] bg-white border-slate-200">
                  <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-3">
                     <Rocket size={20} className="text-[#D6604A]" />
-                    <h3 className="text-lg font-bold text-slate-800">🚀 應用與反思</h3>
+                    <h3 className="text-lg font-bold text-slate-800">應用與反思</h3>
                     <span className="text-xs text-slate-400 ml-auto font-mono">{qualitativeFeedbacks.application.length} 則</span>
                  </div>
                  <div className="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar">
