@@ -402,8 +402,8 @@ const Dashboard = () => {
       <header className="border-b border-slate-200 bg-white/90 backdrop-blur-md sticky top-0 z-50 relative shadow-sm">
         <div className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col space-y-6">
           <div className="flex items-center space-x-4">
-            <div className="p-3 bg-[#144679] rounded-xl shadow-lg shadow-blue-900/20">
-              <Activity className="w-10 h-10 text-white" />
+            <div className="p-2 bg-white rounded-xl shadow-lg shadow-blue-900/10 border border-slate-100">
+              <img src="logo.png" alt="Logo" className="w-12 h-12 object-contain" />
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-extrabold text-[#144679] tracking-wide leading-tight">
@@ -432,23 +432,26 @@ const Dashboard = () => {
              </div>
 
              {viewMode === 'overview' && (
-               <div className="flex items-center space-x-3 bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm ml-0 sm:ml-auto group hover:border-[#144679]/30 transition-colors">
-                  <span className="text-slate-400 text-xs uppercase font-extrabold tracking-wider">FILTER:</span>
-                  <div className="flex items-center relative">
-                    <Filter className="w-4 h-4 text-[#144679] mr-2" />
-                    <select 
-                      value={selectedRole} 
-                      onChange={(e) => setSelectedRole(e.target.value)}
-                      className="bg-white text-slate-700 border-none text-sm font-bold focus:ring-0 py-1 pr-8 cursor-pointer hover:text-[#144679] transition-colors outline-none appearance-none"
-                      style={{ backgroundColor: '#ffffff', color: '#334155' }}
-                    >
-                      <option value="All" className="bg-white text-slate-700">全部角色 (All Roles)</option>
-                      {Object.keys(COLORS.roles).map(role => (
-                         <option key={role} value={role} className="bg-white text-slate-700">{role}</option>
-                      ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
-                      <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+               <div className="flex flex-col items-end ml-0 sm:ml-auto gap-2">
+                  <img src="Chimei.png" alt="Chimei" className="h-8 object-contain" />
+                  <div className="flex items-center space-x-3 bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm group hover:border-[#144679]/30 transition-colors">
+                    <span className="text-slate-400 text-xs uppercase font-extrabold tracking-wider">FILTER:</span>
+                    <div className="flex items-center relative">
+                      <Filter className="w-4 h-4 text-[#144679] mr-2" />
+                      <select 
+                        value={selectedRole} 
+                        onChange={(e) => setSelectedRole(e.target.value)}
+                        className="bg-white text-slate-700 border-none text-sm font-bold focus:ring-0 py-1 pr-8 cursor-pointer hover:text-[#144679] transition-colors outline-none appearance-none"
+                        style={{ backgroundColor: '#ffffff', color: '#334155' }}
+                      >
+                        <option value="All" className="bg-white text-slate-700">全部角色 (All Roles)</option>
+                        {Object.keys(COLORS.roles).map(role => (
+                          <option key={role} value={role} className="bg-white text-slate-700">{role}</option>
+                        ))}
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                      </div>
                     </div>
                   </div>
                </div>
@@ -497,15 +500,17 @@ const Dashboard = () => {
                        <h4 className="text-sm font-extrabold text-slate-400 uppercase tracking-widest mb-2">維度快速解讀</h4>
                        {radarData.map((item, idx) => {
                          const defKey = ['learning_effectiveness', 'self_efficacy', 'transformative_learning', 'behavioral_intention'][idx];
-                         const color = ['text-[#144679]', 'text-[#FAB346]', 'text-[#D6604A]', 'text-[#CC9337]'][idx];
+                         // Changed 4th color to Teal (#0D9488) for better visibility
+                         const colors = ['#144679', '#FAB346', '#D6604A', '#0D9488'];
+                         const colorCode = colors[idx];
                          return (
                            <div key={item.subject} className="group">
                               <div className="flex justify-between items-end mb-1">
-                                <span className={`font-bold text-sm ${color}`}>{item.subject}</span>
+                                <span className="font-bold text-sm" style={{ color: colorCode }}>{item.subject}</span>
                                 <span className="text-slate-800 font-mono font-bold text-lg">{item.A}</span>
                               </div>
                               <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-                                 <div className={`h-full rounded-full ${color.replace('text', 'bg')} opacity-80`} style={{ width: `${(item.A / 5) * 100}%` }}></div>
+                                 <div className="h-full rounded-full opacity-80" style={{ width: `${(item.A / 5) * 100}%`, backgroundColor: colorCode }}></div>
                               </div>
                            </div>
                          );
