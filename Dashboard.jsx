@@ -47,7 +47,7 @@ const COLORS = {
 const METRIC_DEFINITIONS = {
   learning_effectiveness: {
     title: "學習成效",
-    desc: "計算方式：取問卷前三題（國家健康藍圖、AI醫療趨勢、學習型照護理解）的平均分數。代表學員對課程核心知識的認知程度。",
+    desc: "這是學員對課程核心知識吸收程度的自我評估，而非對講師的滿意度。\n\n計算方式：取問卷前三題（國家健康藍圖、AI醫療趨勢、學習型照護理解）的平均分數。\n\n意義：分數越高，代表學員認為自己對 AI 趨勢與政策的理解越深入，知識轉化率越高。",
     simple: "懂不懂？"
   },
   self_efficacy: {
@@ -67,7 +67,7 @@ const METRIC_DEFINITIONS = {
   },
   nps: {
     title: "淨推薦分數",
-    desc: "計算方式：(推薦者% - 批評者%) × 100。推薦者為滿意度 ≥ 4.5分，批評者為滿意度 ≤ 3分。反映學員的忠誠度與口碑傳播意願。",
+    desc: "NPS 是反映學員忠誠度與口碑擴散力的關鍵指標。\n\n計算公式：(推薦者% - 批評者%) × 100\n\n邏輯：\n1. 推薦者 (滿意度 ≥ 4.5)：會積極推廣的鐵粉。\n2. 批評者 (滿意度 ≤ 3.0)：可能給予負評的人。\n\n為什麼這樣算？因為負評的殺傷力往往大於好評。NPS 算出的是扣除負面雜訊後，真正能帶來成長的『淨』口碑值。",
     simple: "推不推薦？"
   }
 };
@@ -115,7 +115,7 @@ const StatCard = ({ title, value, icon: Icon, trend, trendUp, sub, colorClass, f
   </Card>
 );
 
-// 修正：InfoTooltip 支援點擊 (Click) 與 懸停 (Hover)
+// 修正：InfoTooltip 支援點擊 (Click) 與 懸停 (Hover)，並調整位置避免被遮擋
 const InfoTooltip = ({ text }) => {
   const [visible, setVisible] = useState(false);
   return (
@@ -127,11 +127,11 @@ const InfoTooltip = ({ text }) => {
     >
       <Info size={14} className={`text-slate-400 hover:text-[#144679] transition-colors ${visible ? 'text-[#144679]' : ''}`} />
       
-      {/* Tooltip Popup */}
-      <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 w-64 p-3 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-600 shadow-xl transition-all duration-200 z-[60] leading-relaxed ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}>
+      {/* Tooltip Popup - 改為顯示在下方 (top-full) 並增加寬度 */}
+      <div className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-3 w-80 p-4 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-600 shadow-2xl transition-all duration-200 z-[100] leading-relaxed whitespace-pre-line ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
         {text}
-        {/* 箭頭 */}
-        <div className="absolute -bottom-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-white border-r border-b border-slate-200 rotate-45"></div>
+        {/* 箭頭 - 指向上方 */}
+        <div className="absolute -top-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-white border-l border-t border-slate-200 rotate-45"></div>
       </div>
     </div>
   );
