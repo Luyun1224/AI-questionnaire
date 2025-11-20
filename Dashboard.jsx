@@ -388,41 +388,65 @@ const Dashboard = () => {
       )}
 
       {/* Header */}
-      <header className="border-b border-slate-700/60 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="bg-gradient-to-br from-sky-500 to-blue-600 p-2.5 rounded-lg shadow-lg shadow-sky-500/20">
-                <Activity className="text-white" size={24} />
-              </div>
-              <div>
-                <h1 className="text-2xl font-extrabold text-white tracking-tight">2025 奇美月 <span className="text-slate-600 mx-1">|</span> <span className="text-sky-400">AI 數位賦能工作坊</span></h1>
-                <p className="text-xs text-slate-400 font-bold tracking-[0.15em] uppercase mt-0.5">Post-Workshop Analytics Center</p>
-              </div>
+      <header className="border-b border-slate-700/60 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 relative">
+        <div className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col space-y-6">
+          <div className="flex items-center space-x-4">
+            <div className="p-3 bg-sky-500/10 rounded-xl border border-sky-500/30 shadow-[0_0_20px_rgba(56,189,248,0.3)]">
+              <Activity className="w-10 h-10 text-sky-400" />
             </div>
-            <div className="flex flex-wrap items-center gap-3">
-               <button onClick={() => setShowGuide(true)} className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-slate-300 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 hover:text-white transition-all"><HelpCircle size={14} />說明</button>
-               <div className="h-6 w-px bg-slate-700 mx-1 hidden lg:block"></div>
-               <div className="flex bg-slate-800 p-1 rounded-lg border border-slate-700/60">
-                  <button onClick={() => setViewMode('overview')} className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all flex items-center gap-1.5 ${viewMode === 'overview' ? 'bg-sky-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}><BarChart2 size={14} /> 總覽</button>
-                  <button onClick={() => setViewMode('deep-dive')} className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all flex items-center gap-1.5 ${viewMode === 'deep-dive' ? 'bg-sky-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-200'}`}><Layers size={14} /> 深度比較</button>
-               </div>
-               {viewMode === 'overview' && (
-                 <div className="relative group">
-                    <div className="flex items-center gap-2 bg-slate-800 px-3 py-2 rounded-lg border border-slate-700 hover:border-sky-500/50 transition-colors cursor-pointer">
-                      <Filter size={14} className="text-sky-400" />
-                      <select value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)} className="bg-transparent text-white text-xs font-bold outline-none appearance-none cursor-pointer pr-4 min-w-[100px]">
-                        <option value="All" className="bg-slate-800">全部角色 (All)</option>
-                        {Object.keys(COLORS.roles).map(role => (<option key={role} value={role} className="bg-slate-800">{role}</option>))}
-                      </select>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-sky-200 via-sky-400 to-blue-500 bg-clip-text text-transparent tracking-wide leading-tight drop-shadow-sm">
+                2025 奇美月｜AI 數位賦能工作坊
+                <span className="block md:inline md:ml-2 text-2xl md:text-3xl text-white">學員回饋分析儀表板</span>
+              </h1>
+              <p className="text-xs text-slate-400 uppercase tracking-[0.2em] mt-1 font-bold">Post-Workshop Data Analytics Center</p>
+            </div>
+          </div>
+          
+          <div className="flex flex-wrap items-center justify-start gap-4 border-t border-slate-700/60 pt-4">
+             <button onClick={() => setShowGuide(true)} className="flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-sky-100 bg-sky-600/20 border border-sky-500/30 rounded-lg hover:bg-sky-500/30 transition-all duration-300 group shadow-lg shadow-sky-900/20">
+               <HelpCircle size={18} className="text-sky-400 group-hover:text-sky-200 transition-colors" />
+               <span>指標定義說明</span>
+             </button>
+
+             <div className="h-8 w-px bg-slate-700 hidden sm:block mx-2"></div>
+
+             <div className="bg-slate-800 p-1 rounded-lg flex border border-slate-700/60 shadow-inner">
+                <button onClick={() => setViewMode('overview')} className={`px-4 py-2 text-sm font-bold rounded-md transition-all flex items-center gap-2 ${viewMode === 'overview' ? 'bg-sky-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50'}`}>
+                  <BarChart2 size={16} /> 總覽模式
+                </button>
+                <button onClick={() => setViewMode('deep-dive')} className={`px-4 py-2 text-sm font-bold rounded-md transition-all flex items-center gap-2 ${viewMode === 'deep-dive' ? 'bg-sky-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50'}`}>
+                  <Layers size={16} /> 深度比較
+                </button>
+             </div>
+
+             {viewMode === 'overview' && (
+               <div className="flex items-center space-x-3 bg-slate-800 px-4 py-2 rounded-lg border border-slate-700/80 shadow-lg ml-0 sm:ml-auto group hover:border-sky-500/30 transition-colors">
+                  <span className="text-slate-400 text-xs uppercase font-extrabold tracking-wider">FILTER:</span>
+                  <div className="flex items-center relative">
+                    <Filter className="w-4 h-4 text-sky-400 mr-2" />
+                    <select 
+                      value={selectedRole} 
+                      onChange={(e) => setSelectedRole(e.target.value)}
+                      className="bg-slate-800 text-white border-none text-sm font-bold focus:ring-0 py-1 pr-8 cursor-pointer hover:text-sky-300 transition-colors outline-none appearance-none"
+                      style={{ backgroundColor: '#1e293b', color: '#ffffff' }}
+                    >
+                      <option value="All" className="bg-slate-800 text-white">全部角色 (All Roles)</option>
+                      {Object.keys(COLORS.roles).map(role => (
+                         <option key={role} value={role} className="bg-slate-800 text-white">{role}</option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                      <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                     </div>
-                 </div>
-               )}
-            </div>
+                  </div>
+               </div>
+             )}
+          </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 relative z-10">
+      <main className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 relative z-10">
         
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -608,13 +632,12 @@ const Dashboard = () => {
                 <div className="h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={roleComparisonData} margin={{top: 20, right: 30, left: 20, bottom: 5}}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" />
-                      <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontWeight: 700, fontSize: 12 }} axisLine={{stroke: '#475569'}} tickLine={false} />
-                      <YAxis domain={[0, 5]} tick={{ fill: '#64748b', fontWeight: 600 }} axisLine={false} tickLine={false} />
-                      <Tooltip contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', borderRadius: '8px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)' }} cursor={{fill: 'rgba(255,255,255,0.05)'}} />
-                      <Legend wrapperStyle={{ paddingTop: '10px' }} />
-                      <Bar dataKey="整體滿意度" fill={COLORS.roles['醫師']} radius={[4, 4, 0, 0]} barSize={20} />
-                      <Bar dataKey="課程設計" fill={COLORS.roles['行政人員']} radius={[4, 4, 0, 0]} barSize={20} />
+                      <XAxis dataKey="name" tick={{ fill: '#e2e8f0', fontWeight: 700 }} />
+                      <YAxis domain={[0, 5]} tick={{ fill: '#94a3b8', fontWeight: 600 }} />
+                      <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px' }} />
+                      <Legend />
+                      <Bar dataKey="整體滿意度" fill={COLORS.primary} radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="課程設計" fill={COLORS.accent} radius={[4, 4, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
