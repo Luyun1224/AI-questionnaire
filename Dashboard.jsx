@@ -7,7 +7,7 @@ import {
 import { 
   Users, Star, Zap, MessageSquare, Filter, Activity, BarChart2, 
   Layers, HelpCircle, X, Info, Loader2, AlertCircle, TrendingUp, Quote,
-  ThumbsUp, AlertTriangle, Lightbulb, Rocket, Sparkles
+  ThumbsUp, AlertTriangle, Lightbulb, Rocket, Sparkles, ExternalLink, Image as ImageIcon
 } from 'lucide-react';
 
 // ==========================================
@@ -21,20 +21,23 @@ const SATISFACTION_LABELS = [
 ];
 
 const COLORS = {
-  primary: '#38bdf8',     // Sky-400
-  secondary: '#818cf8',   // Indigo-400
-  accent: '#f472b6',      // Pink-400
-  success: '#34d399',     // Emerald-400
-  warning: '#fbbf24',     // Amber-400
+  primary: '#144679',     // Dark Blue (Custom)
+  secondary: '#FAB346',   // Yellow (Custom)
+  accent: '#D6604A',      // Red (Custom)
+  success: '#34d399',     // Emerald-400 (Keep for positive trends)
+  warning: '#CC9337',     // Gold (Custom)
   danger: '#fb7185',      // Rose-400
-  bg: '#0f172a',
+  bg: '#f8fafc',          // Light Mode Background
+  cardBg: '#ffffff',      // White Card
+  text: '#1e293b',        // Slate-800
+  subText: '#64748b',     // Slate-500
   roles: {
-    '醫師': '#38bdf8',
-    '護理人員': '#f472b6',
-    '醫事人員': '#10b981',
-    '行政人員': '#fbbf24',
-    '資訊與研究': '#a78bfa',
-    '學生': '#fb923c',
+    '醫師': '#144679',
+    '護理人員': '#D6604A',
+    '醫事人員': '#FAB346',
+    '行政人員': '#CC9337',
+    '資訊與研究': '#64748b',
+    '學生': '#0ea5e9',
     '其他': '#94a3b8'
   }
 };
@@ -71,18 +74,18 @@ const METRIC_DEFINITIONS = {
 
 // 修正：移除 overflow-hidden，避免 Tooltip 被切掉
 const Card = ({ children, className = "" }) => (
-  <div className={`bg-slate-800/80 backdrop-blur-md border border-slate-600/60 rounded-2xl p-6 shadow-xl transition-all hover:border-sky-500/40 hover:shadow-sky-500/20 relative ${className}`}>
+  <div className={`bg-white border border-slate-200 rounded-2xl p-6 shadow-lg transition-all hover:shadow-xl relative ${className}`}>
     {children}
   </div>
 );
 
 // 修正：StatCard 內部獨立處理裝飾圖示的裁切
 const StatCard = ({ title, value, icon: Icon, trend, trendUp, sub, colorClass, footerLabel, tooltip }) => (
-  <Card className="group">
+  <Card className="group overflow-hidden">
     {/* 裝飾層：獨立裁切，不影響內容 */}
     <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
-        <div className={`absolute -top-2 -right-2 opacity-[0.1] group-hover:opacity-[0.2] transition-opacity transform group-hover:scale-110 duration-500 ${colorClass.replace('bg-', 'text-')}`}>
-        <Icon size={140} />
+        <div className={`absolute -top-4 -right-4 opacity-[0.05] group-hover:opacity-[0.1] transition-opacity transform group-hover:scale-110 duration-500 text-slate-900`}>
+        <Icon size={160} />
         </div>
     </div>
 
@@ -90,21 +93,21 @@ const StatCard = ({ title, value, icon: Icon, trend, trendUp, sub, colorClass, f
     <div className="flex justify-between items-start relative z-10">
       <div>
         <div className="flex items-center gap-2 mb-3">
-          <h3 className="text-slate-100 text-lg font-extrabold uppercase tracking-wider">{title}</h3>
+          <h3 className="text-slate-600 text-lg font-extrabold uppercase tracking-wider">{title}</h3>
           {tooltip && <InfoTooltip text={tooltip} />}
         </div>
-        <div className="text-6xl font-black text-white tracking-tight mt-3 drop-shadow-md">{value}</div>
+        <div className="text-6xl font-black text-[#144679] tracking-tight mt-3 drop-shadow-sm">{value}</div>
       </div>
-      <div className={`p-4 rounded-xl shadow-inner ${colorClass} bg-opacity-30 border border-white/20`}>
-        <Icon size={32} className="text-white" />
+      <div className={`p-4 rounded-xl shadow-sm bg-[#CBDFDF] bg-opacity-50 border border-slate-100`}>
+        <Icon size={32} className="text-[#144679]" />
       </div>
     </div>
-    <div className="mt-6 pt-5 border-t border-slate-600/60 flex justify-between items-center relative z-10">
-      <span className="text-base text-slate-300 font-bold">{footerLabel || "即時數據"}</span>
-      <div className={`flex items-center gap-1 font-bold text-lg ${trendUp ? 'text-emerald-400' : 'text-rose-400'}`}>
-         {trend === 'Live' && <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse mr-1.5"></div>}
+    <div className="mt-6 pt-5 border-t border-slate-100 flex justify-between items-center relative z-10">
+      <span className="text-base text-slate-500 font-bold">{footerLabel || "即時數據"}</span>
+      <div className={`flex items-center gap-1 font-bold text-lg ${trendUp ? 'text-[#D6604A]' : 'text-slate-400'}`}>
+         {trend === 'Live' && <div className="w-3 h-3 rounded-full bg-[#D6604A] animate-pulse mr-1.5"></div>}
          {trend}
-         <span className="text-sm text-slate-300 font-medium ml-1 normal-case opacity-90">({sub})</span>
+         <span className="text-sm text-slate-400 font-medium ml-1 normal-case opacity-90">({sub})</span>
       </div>
     </div>
   </Card>
@@ -120,13 +123,13 @@ const InfoTooltip = ({ text }) => {
       onMouseLeave={() => setVisible(false)}
       onClick={(e) => { e.stopPropagation(); setVisible(!visible); }}
     >
-      <Info size={14} className={`text-slate-500 hover:text-sky-400 transition-colors ${visible ? 'text-sky-400' : ''}`} />
+      <Info size={14} className={`text-slate-400 hover:text-[#144679] transition-colors ${visible ? 'text-[#144679]' : ''}`} />
       
       {/* Tooltip Popup */}
-      <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 w-64 p-3 bg-slate-800/95 backdrop-blur-md border border-slate-600 rounded-xl text-xs font-medium text-slate-200 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] transition-all duration-200 z-[60] leading-relaxed ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}>
+      <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 w-64 p-3 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-600 shadow-xl transition-all duration-200 z-[60] leading-relaxed ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}>
         {text}
         {/* 箭頭 */}
-        <div className="absolute -bottom-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-slate-800/95 border-r border-b border-slate-600 rotate-45"></div>
+        <div className="absolute -bottom-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-white border-r border-b border-slate-200 rotate-45"></div>
       </div>
     </div>
   );
@@ -134,16 +137,16 @@ const InfoTooltip = ({ text }) => {
 
 const HeatmapCell = ({ value, isBold }) => {
   const num = parseFloat(value);
-  let colorClass = 'text-slate-500';
-  if (num >= 4.5) colorClass = 'text-emerald-400';
-  else if (num >= 4.0) colorClass = 'text-sky-300';
-  else if (num >= 3.5) colorClass = 'text-yellow-400';
-  else if (num > 0) colorClass = 'text-rose-400';
+  let colorClass = 'text-slate-400';
+  if (num >= 4.5) colorClass = 'text-[#144679]'; // Dark Blue
+  else if (num >= 4.0) colorClass = 'text-[#FAB346]'; // Yellow
+  else if (num >= 3.5) colorClass = 'text-[#CC9337]'; // Gold
+  else if (num > 0) colorClass = 'text-[#D6604A]'; // Red
   
   const fontClass = isBold ? 'text-2xl font-extrabold' : 'text-lg font-bold';
 
   return (
-    <td className={`px-6 py-5 align-middle transition-colors hover:bg-white/5 ${isBold ? 'text-right' : 'text-center'}`}>
+    <td className={`px-6 py-5 align-middle transition-colors hover:bg-slate-50 ${isBold ? 'text-right' : 'text-center'}`}>
       <span className={`${colorClass} ${fontClass}`}>{value === '-' ? '-' : num}</span>
     </td>
   );
@@ -166,19 +169,19 @@ const CustomRadarTick = ({ payload, x, y, textAnchor, stroke, radius }) => {
         x={x}
         y={y}
         textAnchor={textAnchor}
-        fill="#e2e8f0"
+        fill="#475569"
         fontSize={15}
         fontWeight={700}
-        className={`transition-colors select-none ${visible ? 'fill-sky-400' : 'group-hover:fill-sky-400'}`}
+        className={`transition-colors select-none ${visible ? 'fill-[#144679]' : 'group-hover:fill-[#144679]'}`}
       >
         {payload.value}
       </text>
       {def && (
         <foreignObject x={x - 80} y={y + 10} width="160" height="100" className={`overflow-visible transition-opacity duration-200 pointer-events-none z-50 ${visible ? 'opacity-100' : 'opacity-0'}`}>
-          <div className="bg-slate-800/95 backdrop-blur border border-slate-600 text-slate-200 text-xs p-2.5 rounded-lg shadow-xl relative mt-1 text-center">
-            <div className="font-bold text-sky-300 mb-1">{def.simple}</div>
-            <div className="leading-relaxed text-[10px] text-slate-300">{def.desc}</div>
-            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-800 border-l border-t border-slate-600 rotate-45"></div>
+          <div className="bg-white border border-slate-200 text-slate-600 text-xs p-2.5 rounded-lg shadow-xl relative mt-1 text-center">
+            <div className="font-bold text-[#144679] mb-1">{def.simple}</div>
+            <div className="leading-relaxed text-[10px] text-slate-500">{def.desc}</div>
+            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-l border-t border-slate-200 rotate-45"></div>
           </div>
         </foreignObject>
       )}
@@ -220,12 +223,13 @@ const Dashboard = () => {
       const sats = Array.isArray(row.sat_scores) ? row.sat_scores.map(n => Number(n) || 0) : [];   
       const avg = (arr) => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
 
-      let feedbackObj = { harvest: "", suggestion: "", application: "" };
+      let feedbackObj = { harvest: "", suggestion: "", application: "", link: "" };
       if (row.feedback) {
          if (typeof row.feedback === 'object') {
             feedbackObj.harvest = row.feedback.harvest || row.feedback.q1 || "";
             feedbackObj.suggestion = row.feedback.suggestion || row.feedback.q2 || "";
             feedbackObj.application = row.feedback.application || row.feedback.q3 || "";
+            feedbackObj.link = row.feedback.link || row.feedback.open_4 || row.feedback.q4 || "";
          } else {
             feedbackObj.harvest = String(row.feedback);
          }
@@ -253,7 +257,8 @@ const Dashboard = () => {
     const result = {
       harvest: [],
       suggestion: [],
-      application: []
+      application: [],
+      links: []
     };
     
     filteredData.forEach(item => {
@@ -265,6 +270,9 @@ const Dashboard = () => {
         
       if (item.feedback.application && item.feedback.application.length > 2) 
         result.application.push({ id: item.id, role: item.role, text: item.feedback.application });
+
+      if (item.feedback.link && item.feedback.link.length > 5)
+        result.links.push({ id: item.id, role: item.role, url: item.feedback.link });
     });
     
     return result;
@@ -344,99 +352,99 @@ const Dashboard = () => {
      });
   }, [rawData]);
 
-  if (loading) return <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center text-slate-400"><Loader2 className="w-12 h-12 animate-spin text-sky-500 mb-4" /><p className="font-bold text-sm tracking-wide">正在連線至資料庫...</p></div>;
-  if (error) return <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center text-rose-400"><AlertCircle className="w-12 h-12 mb-4" /><h3 className="text-xl font-bold text-white mb-2">讀取資料失敗</h3><p className="mb-4 text-center max-w-md text-sm">{error}</p><button onClick={() => window.location.reload()} className="px-6 py-2 bg-slate-800 rounded-full hover:bg-slate-700 text-white font-bold text-sm transition-colors border border-slate-700">重新整理</button></div>;
+  if (loading) return <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center text-slate-500"><Loader2 className="w-12 h-12 animate-spin text-[#144679] mb-4" /><p className="font-bold text-sm tracking-wide">正在連線至資料庫...</p></div>;
+  if (error) return <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center text-[#D6604A]"><AlertCircle className="w-12 h-12 mb-4" /><h3 className="text-xl font-bold text-slate-800 mb-2">讀取資料失敗</h3><p className="mb-4 text-center max-w-md text-sm">{error}</p><button onClick={() => window.location.reload()} className="px-6 py-2 bg-white rounded-full hover:bg-slate-100 text-slate-800 font-bold text-sm transition-colors border border-slate-300 shadow-md">重新整理</button></div>;
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-slate-50 font-sans selection:bg-sky-500/30 pb-12 relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-800 font-sans selection:bg-[#FAB346]/30 pb-12 relative overflow-x-hidden">
       
       {/* Background Layers */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-sky-600/10 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-600/10 rounded-full blur-[120px]"></div>
-        <div className="absolute inset-0 bg-[url('https://uibucket.s3.amazonaws.com/grid-pattern.svg')] opacity-[0.03]"></div>
+        <div className="absolute inset-0 opacity-40 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#CBDFDF] rounded-full blur-[120px] opacity-50"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#FAB346] rounded-full blur-[120px] opacity-20"></div>
+        <div className="absolute inset-0 bg-[url('https://uibucket.s3.amazonaws.com/grid-pattern.svg')] opacity-[0.02]"></div>
       </div>
 
       {/* Modal: Guide */}
       {showGuide && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 bg-black/80 backdrop-blur-md animate-fadeIn" onClick={() => setShowGuide(false)}>
-          <div className="bg-slate-900 border border-sky-500/40 rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden relative" onClick={e => e.stopPropagation()}>
-            <button onClick={() => setShowGuide(false)} className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors p-2 rounded-full hover:bg-slate-800">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn" onClick={() => setShowGuide(false)}>
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden relative" onClick={e => e.stopPropagation()}>
+            <button onClick={() => setShowGuide(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors p-2 rounded-full hover:bg-slate-100">
               <X size={20} />
             </button>
             <div className="p-8">
               <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-sky-500/10 rounded-xl text-sky-400 border border-sky-500/20"><HelpCircle size={28} /></div>
+                <div className="p-3 bg-[#144679]/10 rounded-xl text-[#144679] border border-[#144679]/20"><HelpCircle size={28} /></div>
                 <div>
-                  <h2 className="text-2xl font-extrabold text-white tracking-tight">儀表板閱讀指南</h2>
-                  <p className="text-slate-400 text-sm font-medium">如何解讀 AI 工作坊的成效數據？</p>
+                  <h2 className="text-2xl font-extrabold text-slate-800 tracking-tight">儀表板閱讀指南</h2>
+                  <p className="text-slate-500 text-sm font-medium">如何解讀 AI 工作坊的成效數據？</p>
                 </div>
               </div>
               <div className="space-y-4">
                  {Object.entries(METRIC_DEFINITIONS).slice(0, 4).map(([key, def]) => (
-                   <div key={key} className="bg-slate-800/80 p-5 rounded-xl border border-slate-600 flex justify-between items-center shadow-md hover:bg-slate-800 transition-colors">
+                   <div key={key} className="bg-slate-50 p-5 rounded-xl border border-slate-200 flex justify-between items-center shadow-sm hover:bg-white transition-colors">
                       <div>
-                        <span className="font-extrabold text-white text-xl block mb-1.5">{def.title}</span>
-                        <span className="text-base text-slate-200 font-medium leading-relaxed">{def.desc}</span>
+                        <span className="font-extrabold text-[#144679] text-xl block mb-1.5">{def.title}</span>
+                        <span className="text-base text-slate-600 font-medium leading-relaxed">{def.desc}</span>
                       </div>
-                      <span className="text-base bg-sky-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg whitespace-nowrap ml-4 border border-sky-400/30">{def.simple}</span>
+                      <span className="text-base bg-[#144679] text-white px-4 py-2 rounded-lg font-bold shadow-md whitespace-nowrap ml-4">{def.simple}</span>
                    </div>
                  ))}
               </div>
-              <button onClick={() => setShowGuide(false)} className="w-full mt-6 bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-sky-900/20">我瞭解了</button>
+              <button onClick={() => setShowGuide(false)} className="w-full mt-6 bg-[#144679] hover:bg-[#0f355a] text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-900/20">我瞭解了</button>
             </div>
           </div>
         </div>
       )}
 
       {/* Header */}
-      <header className="border-b border-slate-700/60 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 relative">
+      <header className="border-b border-slate-200 bg-white/90 backdrop-blur-md sticky top-0 z-50 relative shadow-sm">
         <div className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col space-y-6">
           <div className="flex items-center space-x-4">
-            <div className="p-3 bg-sky-500/10 rounded-xl border border-sky-500/30 shadow-[0_0_20px_rgba(56,189,248,0.3)]">
-              <Activity className="w-10 h-10 text-sky-400" />
+            <div className="p-3 bg-[#144679] rounded-xl shadow-lg shadow-blue-900/20">
+              <Activity className="w-10 h-10 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-sky-200 via-sky-400 to-blue-500 bg-clip-text text-transparent tracking-wide leading-tight drop-shadow-sm">
+              <h1 className="text-3xl md:text-4xl font-extrabold text-[#144679] tracking-wide leading-tight">
                 2025 奇美月｜AI 數位賦能工作坊
-                <span className="block md:inline md:ml-2 text-2xl md:text-3xl text-white">學員回饋分析儀表板</span>
+                <span className="block md:inline md:ml-2 text-2xl md:text-3xl text-slate-600">學員回饋分析儀表板</span>
               </h1>
               <p className="text-xs text-slate-400 uppercase tracking-[0.2em] mt-1 font-bold">Post-Workshop Data Analytics Center</p>
             </div>
           </div>
           
-          <div className="flex flex-wrap items-center justify-start gap-4 border-t border-slate-700/60 pt-4">
-             <button onClick={() => setShowGuide(true)} className="flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-sky-100 bg-sky-600/20 border border-sky-500/30 rounded-lg hover:bg-sky-500/30 transition-all duration-300 group shadow-lg shadow-sky-900/20">
-               <HelpCircle size={18} className="text-sky-400 group-hover:text-sky-200 transition-colors" />
+          <div className="flex flex-wrap items-center justify-start gap-4 border-t border-slate-100 pt-4">
+             <button onClick={() => setShowGuide(true)} className="flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-[#144679] bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-all duration-300 group shadow-sm">
+               <HelpCircle size={18} className="text-[#144679] group-hover:scale-110 transition-transform" />
                <span>指標定義說明</span>
              </button>
 
-             <div className="h-8 w-px bg-slate-700 hidden sm:block mx-2"></div>
+             <div className="h-8 w-px bg-slate-200 hidden sm:block mx-2"></div>
 
-             <div className="bg-slate-800 p-1 rounded-lg flex border border-slate-700/60 shadow-inner">
-                <button onClick={() => setViewMode('overview')} className={`px-4 py-2 text-sm font-bold rounded-md transition-all flex items-center gap-2 ${viewMode === 'overview' ? 'bg-sky-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50'}`}>
+             <div className="bg-slate-100 p-1 rounded-lg flex border border-slate-200 shadow-inner">
+                <button onClick={() => setViewMode('overview')} className={`px-4 py-2 text-sm font-bold rounded-md transition-all flex items-center gap-2 ${viewMode === 'overview' ? 'bg-white text-[#144679] shadow-sm' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}>
                   <BarChart2 size={16} /> 總覽模式
                 </button>
-                <button onClick={() => setViewMode('deep-dive')} className={`px-4 py-2 text-sm font-bold rounded-md transition-all flex items-center gap-2 ${viewMode === 'deep-dive' ? 'bg-sky-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50'}`}>
+                <button onClick={() => setViewMode('deep-dive')} className={`px-4 py-2 text-sm font-bold rounded-md transition-all flex items-center gap-2 ${viewMode === 'deep-dive' ? 'bg-white text-[#144679] shadow-sm' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}>
                   <Layers size={16} /> 深度比較
                 </button>
              </div>
 
              {viewMode === 'overview' && (
-               <div className="flex items-center space-x-3 bg-slate-800 px-4 py-2 rounded-lg border border-slate-700/80 shadow-lg ml-0 sm:ml-auto group hover:border-sky-500/30 transition-colors">
+               <div className="flex items-center space-x-3 bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm ml-0 sm:ml-auto group hover:border-[#144679]/30 transition-colors">
                   <span className="text-slate-400 text-xs uppercase font-extrabold tracking-wider">FILTER:</span>
                   <div className="flex items-center relative">
-                    <Filter className="w-4 h-4 text-sky-400 mr-2" />
+                    <Filter className="w-4 h-4 text-[#144679] mr-2" />
                     <select 
                       value={selectedRole} 
                       onChange={(e) => setSelectedRole(e.target.value)}
-                      className="bg-slate-800 text-white border-none text-sm font-bold focus:ring-0 py-1 pr-8 cursor-pointer hover:text-sky-300 transition-colors outline-none appearance-none"
-                      style={{ backgroundColor: '#1e293b', color: '#ffffff' }}
+                      className="bg-white text-slate-700 border-none text-sm font-bold focus:ring-0 py-1 pr-8 cursor-pointer hover:text-[#144679] transition-colors outline-none appearance-none"
+                      style={{ backgroundColor: '#ffffff', color: '#334155' }}
                     >
-                      <option value="All" className="bg-slate-800 text-white">全部角色 (All Roles)</option>
+                      <option value="All" className="bg-white text-slate-700">全部角色 (All Roles)</option>
                       {Object.keys(COLORS.roles).map(role => (
-                         <option key={role} value={role} className="bg-slate-800 text-white">{role}</option>
+                         <option key={role} value={role} className="bg-white text-slate-700">{role}</option>
                       ))}
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
@@ -453,10 +461,10 @@ const Dashboard = () => {
         
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          <StatCard title="總回收份數" value={kpi.count} icon={Users} trend="Live" trendUp={true} sub="即時填答" colorClass="bg-indigo-500" footerLabel="目前回收狀況" />
-          <StatCard title="平均滿意度" value={kpi.avgSat} icon={Star} trend={kpi.avgSat >= 4.5 ? "優異" : "良好"} trendUp={true} sub="滿分 5.0" colorClass="bg-amber-500" footerLabel="整體滿意度指標" />
-          <StatCard title="學習成效指數" value={kpi.avgLearn} icon={Zap} trend={kpi.avgLearn >= 4 ? "高成效" : "需加強"} trendUp={kpi.avgLearn >= 4} sub="認知程度" colorClass="bg-sky-500" footerLabel="知識吸收狀況" tooltip={METRIC_DEFINITIONS.learning_effectiveness.desc} />
-          <StatCard title="淨推薦分數 (NPS)" value={kpi.nps} icon={TrendingUp} trend={kpi.nps > 30 ? "+極佳" : kpi.nps > 0 ? "+正向" : "-需改善"} trendUp={kpi.nps > 0} sub="口碑意願" colorClass="bg-emerald-500" footerLabel="推薦意願計算" tooltip={METRIC_DEFINITIONS.nps.desc} />
+          <StatCard title="總回收份數" value={kpi.count} icon={Users} trend="Live" trendUp={true} sub="即時填答" colorClass="bg-[#144679]" footerLabel="目前回收狀況" />
+          <StatCard title="平均滿意度" value={kpi.avgSat} icon={Star} trend={kpi.avgSat >= 4.5 ? "優異" : "良好"} trendUp={true} sub="滿分 5.0" colorClass="bg-[#FAB346]" footerLabel="整體滿意度指標" />
+          <StatCard title="學習成效指數" value={kpi.avgLearn} icon={Zap} trend={kpi.avgLearn >= 4 ? "高成效" : "需加強"} trendUp={kpi.avgLearn >= 4} sub="認知程度" colorClass="bg-[#0ea5e9]" footerLabel="知識吸收狀況" tooltip={METRIC_DEFINITIONS.learning_effectiveness.desc} />
+          <StatCard title="淨推薦分數 (NPS)" value={kpi.nps} icon={TrendingUp} trend={kpi.nps > 30 ? "+極佳" : kpi.nps > 0 ? "+正向" : "-需改善"} trendUp={kpi.nps > 0} sub="口碑意願" colorClass="bg-[#D6604A]" footerLabel="推薦意願計算" tooltip={METRIC_DEFINITIONS.nps.desc} />
         </div>
 
         {viewMode === 'overview' && (
@@ -467,36 +475,36 @@ const Dashboard = () => {
               <Card className="lg:col-span-6 flex flex-col min-h-[500px]">
                  <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2">
-                      <div className="p-1.5 bg-blue-500/10 rounded border border-blue-500/20"><Activity size={16} className="text-blue-400" /></div>
-                      <h3 className="text-lg font-bold text-white">學習成效構面分析</h3>
+                      <div className="p-1.5 bg-[#144679]/10 rounded border border-[#144679]/20"><Activity size={16} className="text-[#144679]" /></div>
+                      <h3 className="text-lg font-bold text-slate-800">學習成效構面分析</h3>
                       <InfoTooltip text="滑鼠停留在各個構面文字上，可查看詳細定義與包含內容。" />
                     </div>
-                    <span className="text-xs font-mono text-slate-500 bg-slate-800 px-2 py-1 rounded border border-slate-700">Role: {selectedRole}</span>
+                    <span className="text-xs font-mono text-slate-500 bg-slate-100 px-2 py-1 rounded border border-slate-200">Role: {selectedRole}</span>
                  </div>
                  <div className="flex-1 flex flex-col md:flex-row">
                     <div className="flex-1 min-h-[350px] relative">
                       <ResponsiveContainer width="100%" height="100%">
                         <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
-                          <PolarGrid stroke="#334155" strokeDasharray="3 3" />
+                          <PolarGrid stroke="#cbd5e1" strokeDasharray="3 3" />
                           <PolarAngleAxis dataKey="subject" tick={<CustomRadarTick />} />
                           <PolarRadiusAxis angle={30} domain={[0, 5]} tick={false} axisLine={false} />
                           <Radar name={selectedRole} dataKey="A" stroke={COLORS.primary} strokeWidth={3} fill={COLORS.primary} fillOpacity={0.2} />
-                          <Tooltip contentStyle={{ backgroundColor: '#1e293b', borderColor: '#38bdf8', color: '#f8fafc', borderRadius: '8px', fontWeight: 'bold', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)' }} />
+                          <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', color: '#1e293b', borderRadius: '8px', fontWeight: 'bold', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }} />
                         </RadarChart>
                       </ResponsiveContainer>
                     </div>
-                    <div className="md:w-40 md:border-l border-slate-700/50 md:pl-4 mt-6 md:mt-0 flex flex-col justify-center gap-4">
+                    <div className="md:w-40 md:border-l border-slate-200 md:pl-4 mt-6 md:mt-0 flex flex-col justify-center gap-4">
                        <h4 className="text-sm font-extrabold text-slate-400 uppercase tracking-widest mb-2">維度快速解讀</h4>
                        {radarData.map((item, idx) => {
                          const defKey = ['learning_effectiveness', 'self_efficacy', 'transformative_learning', 'behavioral_intention'][idx];
-                         const color = ['text-sky-400', 'text-amber-400', 'text-emerald-400', 'text-purple-400'][idx];
+                         const color = ['text-[#144679]', 'text-[#FAB346]', 'text-[#D6604A]', 'text-[#CC9337]'][idx];
                          return (
                            <div key={item.subject} className="group">
                               <div className="flex justify-between items-end mb-1">
                                 <span className={`font-bold text-sm ${color}`}>{item.subject}</span>
-                                <span className="text-white font-mono font-bold text-lg">{item.A}</span>
+                                <span className="text-slate-800 font-mono font-bold text-lg">{item.A}</span>
                               </div>
-                              <div className="h-1.5 w-full bg-slate-700/50 rounded-full overflow-hidden">
+                              <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
                                  <div className={`h-full rounded-full ${color.replace('text', 'bg')} opacity-80`} style={{ width: `${(item.A / 5) * 100}%` }}></div>
                               </div>
                            </div>
@@ -511,8 +519,8 @@ const Dashboard = () => {
                  <Card className="min-h-[280px] flex flex-col h-full">
                     <div className="flex items-center justify-between mb-4">
                        <div className="flex items-center gap-2">
-                          <Star size={16} className="text-amber-400" />
-                          <h3 className="text-lg font-bold text-white">滿意度細項分析</h3>
+                          <Star size={16} className="text-[#FAB346]" />
+                          <h3 className="text-lg font-bold text-slate-800">滿意度細項分析</h3>
                        </div>
                        <InfoTooltip text="顯示各個滿意度維度的平均分數，包含難易度、實用性等8大面向。" />
                     </div>
@@ -521,27 +529,27 @@ const Dashboard = () => {
                        <div className="flex-1 min-h-[250px]">
                          <ResponsiveContainer width="100%" height="100%">
                             <BarChart layout="vertical" data={satisfactionDetailedData.chartData} margin={{ top: 0, right: 40, left: 20, bottom: 0 }} barCategoryGap={12}>
-                               <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#334155" />
+                               <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e2e8f0" />
                                <XAxis type="number" domain={[0, 5]} hide />
-                               <YAxis dataKey="name" type="category" tick={{ fill: '#f1f5f9', fontWeight: 700, fontSize: 15 }} width={90} axisLine={false} tickLine={false} />
-                               <Tooltip cursor={{fill: 'rgba(255,255,255,0.05)'}} contentStyle={{ backgroundColor: '#1e293b', borderColor: '#818cf8', color: '#f8fafc', borderRadius: '8px' }} />
-                               <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={24} label={{ position: 'right', fill: '#fff', fontSize: 14, fontWeight: '800' }}>
+                               <YAxis dataKey="name" type="category" tick={{ fill: '#475569', fontWeight: 700, fontSize: 15 }} width={90} axisLine={false} tickLine={false} />
+                               <Tooltip cursor={{fill: 'rgba(0,0,0,0.05)'}} contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', color: '#1e293b', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }} />
+                               <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={24} label={{ position: 'right', fill: '#1e293b', fontSize: 14, fontWeight: '800' }}>
                                   {satisfactionDetailedData.chartData?.map((entry, index) => (<Cell key={`cell-${index}`} fill={entry.fill} />))}
                                </Bar>
                             </BarChart>
                          </ResponsiveContainer>
                        </div>
-                       <div className="md:w-48 flex flex-col justify-center gap-4 pl-4 md:border-l border-slate-700/50">
+                       <div className="md:w-48 flex flex-col justify-center gap-4 pl-4 md:border-l border-slate-200">
                           <h4 className="text-sm font-extrabold text-slate-400 uppercase tracking-widest">重點分析 Insights</h4>
-                          <div className="bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-lg">
-                             <div className="flex items-center gap-2 mb-1"><ThumbsUp size={16} className="text-emerald-400" /><span className="text-xs font-bold text-emerald-300 uppercase">表現最佳 Strengths</span></div>
-                             <div className="text-2xl font-extrabold text-white">{satisfactionDetailedData.highest?.value}</div>
-                             <div className="text-sm text-slate-300 mt-0.5">{satisfactionDetailedData.highest?.name}</div>
+                          <div className="bg-[#CBDFDF]/30 border border-[#CBDFDF] p-4 rounded-lg">
+                             <div className="flex items-center gap-2 mb-1"><ThumbsUp size={16} className="text-[#144679]" /><span className="text-xs font-bold text-[#144679] uppercase">表現最佳 Strengths</span></div>
+                             <div className="text-2xl font-extrabold text-slate-800">{satisfactionDetailedData.highest?.value}</div>
+                             <div className="text-sm text-slate-500 mt-0.5">{satisfactionDetailedData.highest?.name}</div>
                           </div>
-                          <div className={`border p-4 rounded-lg ${satisfactionDetailedData.lowest?.value < 4.0 ? 'bg-amber-500/10 border-amber-500/20' : 'bg-slate-700/30 border-slate-600'}`}>
-                             <div className="flex items-center gap-2 mb-1"><AlertTriangle size={16} className={satisfactionDetailedData.lowest?.value < 4.0 ? "text-amber-400" : "text-slate-400"} /><span className={`text-xs font-bold uppercase ${satisfactionDetailedData.lowest?.value < 4.0 ? "text-amber-300" : "text-slate-400"}`}>需注意 Weaknesses</span></div>
-                             <div className="text-2xl font-extrabold text-white">{satisfactionDetailedData.lowest?.value}</div>
-                             <div className="text-sm text-slate-300 mt-0.5">{satisfactionDetailedData.lowest?.name}</div>
+                          <div className={`border p-4 rounded-lg ${satisfactionDetailedData.lowest?.value < 4.0 ? 'bg-[#FAB346]/10 border-[#FAB346]/30' : 'bg-slate-50 border-slate-200'}`}>
+                             <div className="flex items-center gap-2 mb-1"><AlertTriangle size={16} className={satisfactionDetailedData.lowest?.value < 4.0 ? "text-[#FAB346]" : "text-slate-400"} /><span className={`text-xs font-bold uppercase ${satisfactionDetailedData.lowest?.value < 4.0 ? "text-[#CC9337]" : "text-slate-400"}`}>需注意 Weaknesses</span></div>
+                             <div className="text-2xl font-extrabold text-slate-800">{satisfactionDetailedData.lowest?.value}</div>
+                             <div className="text-sm text-slate-500 mt-0.5">{satisfactionDetailedData.lowest?.name}</div>
                           </div>
                        </div>
                     </div>
@@ -552,74 +560,125 @@ const Dashboard = () => {
             {/* --- Qualitative Feedback Section (3 Columns) --- */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Column 1: Harvest */}
-              <Card className="flex flex-col h-[400px] bg-sky-900/10 border-sky-500/20">
-                 <div className="flex items-center gap-2 mb-4 border-b border-sky-500/20 pb-3">
-                    <Sparkles size={20} className="text-sky-400" />
-                    <h3 className="text-lg font-bold text-white">✨ 學習收穫</h3>
-                    <span className="text-xs text-sky-300/70 ml-auto font-mono">{qualitativeFeedbacks.harvest.length} 則</span>
+              <Card className="flex flex-col h-[400px] bg-white border-slate-200">
+                 <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-3">
+                    <Sparkles size={20} className="text-[#144679]" />
+                    <h3 className="text-lg font-bold text-slate-800">✨ 學習收穫</h3>
+                    <span className="text-xs text-slate-400 ml-auto font-mono">{qualitativeFeedbacks.harvest.length} 則</span>
                  </div>
                  <div className="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar">
                     {qualitativeFeedbacks.harvest.map((item, i) => (
-                      <div key={i} className="bg-slate-800 p-4 rounded-2xl rounded-tl-none relative border border-slate-700 shadow-sm">
-                        <div className="absolute -left-2 top-0 w-4 h-4 bg-slate-800 transform skew-x-12 z-0"></div>
+                      <div key={i} className="bg-slate-50 p-4 rounded-2xl rounded-tl-none relative border border-slate-200 shadow-sm">
+                        <div className="absolute -left-2 top-0 w-4 h-4 bg-slate-50 transform skew-x-12 z-0 border-l border-t border-slate-200"></div>
                         <div className="relative z-10">
-                          <p className="text-base text-slate-200 leading-relaxed mb-2">{item.text}</p>
+                          <p className="text-base text-slate-700 leading-relaxed mb-2">{item.text}</p>
                           <div className="flex justify-end items-center gap-2">
-                            <span className="text-xs font-bold text-sky-400 bg-sky-900/30 px-2 py-1 rounded uppercase">{item.role}</span>
+                            <span className="text-xs font-bold text-[#144679] bg-[#144679]/10 px-2 py-1 rounded uppercase">{item.role}</span>
                           </div>
                         </div>
                       </div>
                     ))}
-                    {qualitativeFeedbacks.harvest.length === 0 && <div className="text-center text-slate-500 text-sm mt-10">尚無此類別回饋</div>}
+                    {qualitativeFeedbacks.harvest.length === 0 && <div className="text-center text-slate-400 text-sm mt-10">尚無此類別回饋</div>}
                  </div>
               </Card>
 
               {/* Column 2: Suggestion */}
-              <Card className="flex flex-col h-[400px] bg-amber-900/10 border-amber-500/20">
-                 <div className="flex items-center gap-2 mb-4 border-b border-amber-500/20 pb-3">
-                    <Lightbulb size={20} className="text-amber-400" />
-                    <h3 className="text-lg font-bold text-white">💡 建議改善</h3>
-                    <span className="text-xs text-amber-300/70 ml-auto font-mono">{qualitativeFeedbacks.suggestion.length} 則</span>
+              <Card className="flex flex-col h-[400px] bg-white border-slate-200">
+                 <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-3">
+                    <Lightbulb size={20} className="text-[#FAB346]" />
+                    <h3 className="text-lg font-bold text-slate-800">💡 建議改善</h3>
+                    <span className="text-xs text-slate-400 ml-auto font-mono">{qualitativeFeedbacks.suggestion.length} 則</span>
                  </div>
                  <div className="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar">
                     {qualitativeFeedbacks.suggestion.map((item, i) => (
-                      <div key={i} className="bg-slate-800 p-4 rounded-2xl rounded-tl-none relative border border-slate-700 shadow-sm">
-                         <div className="absolute -left-2 top-0 w-4 h-4 bg-slate-800 transform skew-x-12 z-0"></div>
+                      <div key={i} className="bg-slate-50 p-4 rounded-2xl rounded-tl-none relative border border-slate-200 shadow-sm">
+                         <div className="absolute -left-2 top-0 w-4 h-4 bg-slate-50 transform skew-x-12 z-0 border-l border-t border-slate-200"></div>
                          <div className="relative z-10">
-                          <p className="text-base text-slate-200 leading-relaxed mb-2">{item.text}</p>
+                          <p className="text-base text-slate-700 leading-relaxed mb-2">{item.text}</p>
                           <div className="flex justify-end items-center gap-2">
-                            <span className="text-xs font-bold text-amber-400 bg-amber-900/30 px-2 py-1 rounded uppercase">{item.role}</span>
+                            <span className="text-xs font-bold text-[#CC9337] bg-[#FAB346]/10 px-2 py-1 rounded uppercase">{item.role}</span>
                           </div>
                          </div>
                       </div>
                     ))}
-                    {qualitativeFeedbacks.suggestion.length === 0 && <div className="text-center text-slate-500 text-sm mt-10">尚無此類別回饋</div>}
+                    {qualitativeFeedbacks.suggestion.length === 0 && <div className="text-center text-slate-400 text-sm mt-10">尚無此類別回饋</div>}
                  </div>
               </Card>
 
               {/* Column 3: Application / Reflection */}
-              <Card className="flex flex-col h-[400px] bg-emerald-900/10 border-emerald-500/20">
-                 <div className="flex items-center gap-2 mb-4 border-b border-emerald-500/20 pb-3">
-                    <Rocket size={20} className="text-emerald-400" />
-                    <h3 className="text-lg font-bold text-white">🚀 應用與反思</h3>
-                    <span className="text-xs text-emerald-300/70 ml-auto font-mono">{qualitativeFeedbacks.application.length} 則</span>
+              <Card className="flex flex-col h-[400px] bg-white border-slate-200">
+                 <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-3">
+                    <Rocket size={20} className="text-[#D6604A]" />
+                    <h3 className="text-lg font-bold text-slate-800">🚀 應用與反思</h3>
+                    <span className="text-xs text-slate-400 ml-auto font-mono">{qualitativeFeedbacks.application.length} 則</span>
                  </div>
                  <div className="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar">
                     {qualitativeFeedbacks.application.map((item, i) => (
-                      <div key={i} className="bg-slate-800 p-4 rounded-2xl rounded-tl-none relative border border-slate-700 shadow-sm">
-                        <div className="absolute -left-2 top-0 w-4 h-4 bg-slate-800 transform skew-x-12 z-0"></div>
+                      <div key={i} className="bg-slate-50 p-4 rounded-2xl rounded-tl-none relative border border-slate-200 shadow-sm">
+                        <div className="absolute -left-2 top-0 w-4 h-4 bg-slate-50 transform skew-x-12 z-0 border-l border-t border-slate-200"></div>
                         <div className="relative z-10">
-                          <p className="text-base text-slate-200 leading-relaxed mb-2">{item.text}</p>
+                          <p className="text-base text-slate-700 leading-relaxed mb-2">{item.text}</p>
                           <div className="flex justify-end items-center gap-2">
-                            <span className="text-xs font-bold text-emerald-400 bg-emerald-900/30 px-2 py-1 rounded uppercase">{item.role}</span>
+                            <span className="text-xs font-bold text-[#D6604A] bg-[#D6604A]/10 px-2 py-1 rounded uppercase">{item.role}</span>
                           </div>
                         </div>
                       </div>
                     ))}
-                    {qualitativeFeedbacks.application.length === 0 && <div className="text-center text-slate-500 text-sm mt-10">尚無此類別回饋</div>}
+                    {qualitativeFeedbacks.application.length === 0 && <div className="text-center text-slate-400 text-sm mt-10">尚無此類別回饋</div>}
                  </div>
               </Card>
             </div>
+
+            {/* --- Student Works Gallery --- */}
+            <div className="mt-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 bg-[#144679] rounded-lg shadow-md">
+                  <ImageIcon size={24} className="text-white" />
+                </div>
+                <h2 className="text-2xl font-extrabold text-[#144679]">學員作品展示 Gallery</h2>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {qualitativeFeedbacks.links.map((item, i) => (
+                  <a 
+                    key={i} 
+                    href={item.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="group block bg-white rounded-xl overflow-hidden border border-slate-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <div className="h-48 bg-slate-100 relative overflow-hidden">
+                      {/* Try to use Microlink for preview, fallback to icon */}
+                      <img 
+                        src={`https://api.microlink.io/?url=${encodeURIComponent(item.url)}&screenshot=true&meta=false&embed=screenshot.url`} 
+                        alt="Website Preview" 
+                        className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                        onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-slate-100 text-slate-300 hidden">
+                        <ExternalLink size={48} />
+                      </div>
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+                    </div>
+                    <div className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-[#144679] bg-[#CBDFDF] px-2 py-1 rounded uppercase">{item.role}</span>
+                        <ExternalLink size={14} className="text-slate-400 group-hover:text-[#144679]" />
+                      </div>
+                      <h4 className="font-bold text-slate-800 text-sm line-clamp-1 mb-1">{item.url.replace(/^https?:\/\//, '')}</h4>
+                      <p className="text-xs text-slate-500">點擊查看學員作品</p>
+                    </div>
+                  </a>
+                ))}
+                {qualitativeFeedbacks.links.length === 0 && (
+                  <div className="col-span-full py-12 text-center text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-300">
+                    <ImageIcon size={48} className="mx-auto mb-3 opacity-20" />
+                    <p>目前尚無學員提交作品連結</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
           </div>
         )}
 
@@ -628,16 +687,16 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
                 <div className="flex items-center gap-2 mb-4">
-                   <BarChart2 size={18} className="text-indigo-400" />
-                   <h3 className="text-lg font-bold text-white">角色間滿意度差異</h3>
+                   <BarChart2 size={18} className="text-[#FAB346]" />
+                   <h3 className="text-lg font-bold text-slate-800">角色間滿意度差異</h3>
                    <InfoTooltip text="比較不同職類在「整體滿意度」與「課程設計」上的評分差異。" />
                 </div>
                 <div className="h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={roleComparisonData} margin={{top: 20, right: 30, left: 20, bottom: 5}}>
-                      <XAxis dataKey="name" tick={{ fill: '#e2e8f0', fontWeight: 700 }} />
+                      <XAxis dataKey="name" tick={{ fill: '#475569', fontWeight: 700 }} />
                       <YAxis domain={[0, 5]} tick={{ fill: '#94a3b8', fontWeight: 600 }} />
-                      <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px' }} />
+                      <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '8px', color: '#1e293b' }} />
                       <Legend />
                       <Bar dataKey="整體滿意度" fill={COLORS.primary} radius={[4, 4, 0, 0]} />
                       <Bar dataKey="課程設計" fill={COLORS.accent} radius={[4, 4, 0, 0]} />
@@ -647,30 +706,30 @@ const Dashboard = () => {
               </Card>
               <Card>
                  <div className="flex items-center gap-2 mb-4">
-                   <Layers size={18} className="text-sky-400" />
-                   <h3 className="text-lg font-bold text-white">學習成效 - 角色交叉比對</h3>
+                   <Layers size={18} className="text-[#144679]" />
+                   <h3 className="text-lg font-bold text-slate-800">學習成效 - 角色交叉比對</h3>
                  </div>
                  <div className="h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
-                      <PolarGrid stroke="#334155" />
-                      <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontWeight: 700, fontSize: 12 }} />
+                      <PolarGrid stroke="#cbd5e1" />
+                      <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontWeight: 700, fontSize: 12 }} />
                       <PolarRadiusAxis angle={30} domain={[0, 5]} tick={false} axisLine={false} />
                       {Object.keys(COLORS.roles).map((role) => (<Radar key={role} name={role} dataKey={role} stroke={COLORS.roles[role]} strokeWidth={2} fill="transparent" />))}
                       <Legend wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }} iconType="circle" />
-                      <Tooltip contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', borderRadius: '8px' }} />
+                      <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '8px', color: '#1e293b' }} />
                     </RadarChart>
                   </ResponsiveContainer>
                 </div>
               </Card>
             </div>
-            <Card className="overflow-hidden p-0 border-none">
-              <div className="p-6 border-b border-slate-700/50 bg-slate-800/40">
-                 <h3 className="text-lg font-bold text-white">各構面得分熱力矩陣</h3>
+            <Card className="overflow-hidden p-0 border-none shadow-lg">
+              <div className="p-6 border-b border-slate-200 bg-slate-50">
+                 <h3 className="text-lg font-bold text-slate-800">各構面得分熱力矩陣</h3>
               </div>
               <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left text-slate-300">
-                  <thead className="text-sm text-slate-400 uppercase bg-slate-900/50">
+                <table className="w-full text-sm text-left text-slate-600">
+                  <thead className="text-sm text-slate-500 uppercase bg-slate-100">
                     <tr>
                       <th className="px-6 py-4 font-extrabold tracking-wider">角色 Role</th>
                       <th className="px-6 py-4 font-extrabold text-center">學習成效</th>
@@ -680,14 +739,14 @@ const Dashboard = () => {
                       <th className="px-6 py-4 text-right font-extrabold">滿意度</th>
                     </tr>
                   </thead>
-                  <tbody className="font-medium divide-y divide-slate-700/50">
+                  <tbody className="font-medium divide-y divide-slate-100">
                     {Object.keys(COLORS.roles).map((role) => {
                       const roleData = rawData.filter(d => d.role === role);
                       const getAvg = (key) => roleData.length ? (roleData.reduce((acc, cur) => acc + cur[key], 0) / roleData.length).toFixed(2) : '-';
                       return (
-                        <tr key={role} className="hover:bg-white/5 transition-colors">
-                          <td className="px-6 py-4 font-bold text-white flex items-center gap-3 text-base">
-                            <div className="w-3 h-3 rounded-sm shadow-[0_0_8px_currentColor]" style={{backgroundColor: COLORS.roles[role], color: COLORS.roles[role]}}></div>
+                        <tr key={role} className="hover:bg-slate-50 transition-colors">
+                          <td className="px-6 py-4 font-bold text-slate-800 flex items-center gap-3 text-base">
+                            <div className="w-3 h-3 rounded-sm shadow-sm" style={{backgroundColor: COLORS.roles[role]}}></div>
                             {role}
                           </td>
                           <HeatmapCell value={getAvg('learning_effectiveness')} />
@@ -707,7 +766,7 @@ const Dashboard = () => {
 
       </main>
       
-      <footer className="text-center py-8 text-slate-400 text-sm font-medium border-t border-slate-800/50 mt-12 relative z-10">
+      <footer className="text-center py-8 text-slate-400 text-sm font-medium border-t border-slate-200 mt-12 relative z-10 bg-white">
         © 2025 奇美醫院教學部
       </footer>
 
