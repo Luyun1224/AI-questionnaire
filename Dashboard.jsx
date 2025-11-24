@@ -290,10 +290,11 @@ const Dashboard = () => {
       let feedbackObj = { harvest: "", suggestion: "", application: "", link: "" };
       if (row.feedback) {
          if (typeof row.feedback === 'object') {
-            feedbackObj.harvest = row.feedback.harvest || row.feedback.q1 || "";
-            feedbackObj.suggestion = row.feedback.suggestion || row.feedback.q2 || "";
-            feedbackObj.application = row.feedback.application || row.feedback.q3 || "";
-            feedbackObj.link = row.feedback.link || row.feedback.open_4 || row.feedback.q4 || "";
+            // 修正：正確映射 GS 欄位
+            feedbackObj.harvest = row.feedback.harvest || row.feedback.q1 || "";           // open_1 (W列)
+            feedbackObj.application = row.feedback.plan || row.feedback.q2 || "";          // open_2 (X列) - 修正此處！
+            feedbackObj.suggestion = row.feedback.suggestion || row.feedback.q3 || "";     // open_3 (Y列)
+            feedbackObj.link = row.feedback.link || row.feedback.open_4 || row.feedback.q4 || ""; // open_4 (Z列)
          } else {
             feedbackObj.harvest = String(row.feedback);
          }
