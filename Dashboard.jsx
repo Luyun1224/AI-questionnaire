@@ -21,8 +21,8 @@ import {
 const GAS_API_URL = "https://script.google.com/macros/s/AKfycbz4YSi0cs7cV8dM3Sm70MMTXbov6FvQk5ZvnmyEkrOrZiwaqhgxeyaf0uMdkqizU0n-/exec"; 
 const TOTAL_PARTICIPANTS = 61;
 
-const LOGO_IMG = "https://placehold.co/100x100/144679/ffffff?text=Logo";
-const CHIMEI_IMG = "https://placehold.co/200x60/ffffff/144679?text=Hospital";
+const LOGO_IMG = "/logo.png";  // Changed from placeholder to actual logo
+const CHIMEI_IMG = "/Chimei.png";  // Changed from placeholder to actual image
 
 const SATISFACTION_LABELS = [
   "內容實用性", "難易度適中", "講師表達", "互動氣氛", 
