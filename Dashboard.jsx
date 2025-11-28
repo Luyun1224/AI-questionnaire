@@ -614,11 +614,14 @@ const App = () => {
                <div className="p-2 bg-white rounded-xl shadow-lg shadow-blue-900/10 border border-slate-100">
                  <img src={LOGO_IMG} alt="Logo" className="w-10 h-10 object-contain rounded-md" />
                </div>
-               <div>
-                 <h1 className="text-2xl md:text-3xl font-extrabold text-[#144679] tracking-wide leading-tight">
-                   2025 奇美月｜AI 數位賦能工作坊
-                 </h1>
-                 <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] mt-1 font-bold">Post-Workshop Analytics</p>
+               <div className="flex items-center gap-3">
+                 <img src={LOGO_IMG} alt="奇美月 Logo" className="h-8 w-8 object-contain" />
+                 <div>
+                   <h1 className="text-2xl md:text-3xl font-extrabold text-[#144679] tracking-wide leading-tight">
+                     2025 奇美月｜AI 數位賦能工作坊
+                   </h1>
+                   <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] mt-1 font-bold">Post-Workshop Analytics</p>
+                 </div>
                </div>
              </div>
              <div className="flex flex-col items-end">
@@ -649,13 +652,16 @@ const App = () => {
               </div>
 
               {viewMode === 'overview' && (
-                 <CustomDropdown 
-                   options={Object.keys(COLORS.roles)} 
-                   value={selectedRole} 
-                   onChange={setSelectedRole} 
-                   label="FILTER"
-                   icon={Filter}
-                 />
+                 <div className="flex flex-col items-end gap-2">
+                   <img src={CHIMEI_IMG} alt="Chimei Filter" className="h-6 object-contain" />
+                   <CustomDropdown 
+                     options={Object.keys(COLORS.roles)} 
+                     value={selectedRole} 
+                     onChange={setSelectedRole} 
+                     label="FILTER"
+                     icon={Filter}
+                   />
+                 </div>
               )}
           </div>
         </div>
@@ -1095,7 +1101,7 @@ const App = () => {
                     })}
                   </tbody>
                 </table>
-              </div>
+                           </div>
             </Card>
             
             {/* Added: Qualitative Insights Summary for Deep Dive */}
