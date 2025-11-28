@@ -1138,7 +1138,7 @@ const App = () => {
       </main>
       
       <footer className="text-center py-8 text-slate-400 text-xs font-medium border-t border-slate-200 mt-12 relative z-10 bg-white">
-        © 2025 AI Digital Empowerment Workshop Analytics
+        © 2025 奇美月｜AI 數位賦能工作坊
       </footer>
 
       {/* Styles */}
