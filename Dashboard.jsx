@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList, 
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Cell,
   ScatterChart, Scatter, ZAxis, ReferenceLine
 } from 'recharts';
@@ -114,6 +114,38 @@ const MOCK_DATA = Array.from({ length: 60 }, (_, i) => {
 // ==========================================
 // Sub-Components
 // ==========================================
+
+
+const formatChartValue = (value) => {
+  const numberValue = Number(value);
+  return Number.isFinite(numberValue) ? numberValue.toFixed(2) : value;
+};
+
+const RadarValuePanel = ({ data, roles }) => {
+  if (!data || data.length === 0) return null;
+
+  return (
+    <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50/80 p-3">
+      <div className="mb-2 text-[11px] font-extrabold uppercase tracking-wider text-slate-400">圖表數值</div>
+      <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
+        {data.map((item) => (
+          <div key={item.subject} className="rounded-lg bg-white px-3 py-2 shadow-sm ring-1 ring-slate-100">
+            <div className="mb-1 font-bold text-slate-700">{item.subject}</div>
+            {roles.map((role) => (
+              <div key={role.key} className="flex items-center justify-between gap-2 leading-5">
+                <span className="flex min-w-0 items-center gap-1 text-slate-500">
+                  {role.color && <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: role.color }} />}
+                  <span className="truncate">{role.label}</span>
+                </span>
+                <span className="font-mono font-extrabold text-slate-800">{formatChartValue(item[role.key])}</span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const Card = ({ children, className = "" }) => (
   <div className={`bg-white border border-slate-200 rounded-2xl p-6 shadow-lg transition-all hover:shadow-xl relative ${className}`}>
@@ -804,7 +836,8 @@ const App = () => {
                     <span className="text-xs font-mono text-slate-500 bg-slate-100 px-2 py-1 rounded border border-slate-200">Role: {selectedRole}</span>
                   </div>
                   <div className="flex-1 flex flex-col md:flex-row gap-6">
-                    <div className="flex-1 w-full h-[350px]">
+                    <div className="flex-1 w-full">
+                      <div className="h-[285px]">
                       <ResponsiveContainer width="100%" height="100%">
                         <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
                           <PolarGrid stroke="#cbd5e1" strokeDasharray="3 3" />
@@ -814,6 +847,8 @@ const App = () => {
                           <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', color: '#1e293b', borderRadius: '8px', fontWeight: 'bold' }} />
                         </RadarChart>
                       </ResponsiveContainer>
+                      </div>
+                      <RadarValuePanel data={radarData} roles={[{ key: 'A', label: selectedRole, color: COLORS.primary }]} />
                     </div>
                     <div className="w-full md:w-56 md:border-l border-slate-200 md:pl-6 flex flex-col gap-4">
                        <h4 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest flex items-center gap-2"><MessageSquare size={14}/> 數據背後的聲音</h4>
@@ -1051,8 +1086,12 @@ const App = () => {
                       <YAxis domain={[0, 5]} tick={{ fill: '#94a3b8', fontWeight: 600 }} />
                       <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '8px', color: '#1e293b' }} />
                       <Legend />
-                      <Bar dataKey="整體滿意度" fill={COLORS.primary} radius={[4, 4, 0, 0]} />
-                      <Bar dataKey="課程設計" fill={COLORS.accent} radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="整體滿意度" fill={COLORS.primary} radius={[4, 4, 0, 0]}>
+                        <LabelList dataKey="整體滿意度" position="top" formatter={formatChartValue} fill="#144679" fontSize={11} fontWeight={800} />
+                      </Bar>
+                      <Bar dataKey="課程設計" fill={COLORS.accent} radius={[4, 4, 0, 0]}>
+                        <LabelList dataKey="課程設計" position="top" formatter={formatChartValue} fill="#D6604A" fontSize={11} fontWeight={800} />
+                      </Bar>
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -1062,9 +1101,10 @@ const App = () => {
                    <Layers size={18} className="text-[#144679]" />
                    <h3 className="text-lg font-bold text-slate-800">學習成效 - 角色交叉比對</h3>
                  </div>
-                 <div className="h-[300px]">
+                 <div>
+                  <div className="h-[240px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
+                    <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarData}>
                       <PolarGrid stroke="#cbd5e1" />
                       <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontWeight: 700, fontSize: 12 }} />
                       <PolarRadiusAxis angle={30} domain={[0, 5]} tick={false} axisLine={false} />
@@ -1073,6 +1113,8 @@ const App = () => {
                       <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '8px', color: '#1e293b' }} />
                     </RadarChart>
                   </ResponsiveContainer>
+                  </div>
+                  <RadarValuePanel data={radarData} roles={Object.keys(COLORS.roles).map((role) => ({ key: role, label: role, color: COLORS.roles[role] }))} />
                 </div>
               </Card>
             </div>
